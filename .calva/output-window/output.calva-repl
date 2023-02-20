@@ -1,0 +1,601 @@
+; This is the Calva evaluation results output window.
+; TIPS: The keyboard shortcut `ctrl+alt+o o` shows and focuses this window
+;   when connected to a REPL session.
+; Please see https://calva.io/output/ for more info.
+; Happy coding! ♥️
+
+; Aborting connect, error determining connect sequence.
+; Connecting using "Generic" project type.
+; You can make Calva auto-select this:
+; "calva.autoSelectReplConnectProjectType": "Generic"
+;   - See https://calva.io/connect/#auto-select-project-type
+; 
+; Connecting ...
+; No nrepl port file found.
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
+; nREPL Connection was closed
+; Connecting using "Generic" project type.
+; You can make Calva auto-select this:
+; "calva.autoSelectReplConnectProjectType": "Generic"
+;   - See https://calva.io/connect/#auto-select-project-type
+; 
+; Connecting ...
+; No nrepl port file found.
+; Bad url: 9001
+; Connecting using "ClojureScript nREPL Server" project type.
+; You can make Calva auto-select this:
+; "calva.autoSelectReplConnectProjectType": "ClojureScript nREPL Server"
+;   - See https://calva.io/connect/#auto-select-project-type
+; 
+; Connecting ...
+; No nrepl port file found.
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉shadow.user꞉> 
+; Creating cljs repl session...
+; Connecting cljs repl: ClojureScript nREPL Server...
+;   The Calva Connection Log might have more connection progress information.
+; Connected session: cljs
+; TIPS: You can choose which REPL to use (clj or cljs):
+;    *Calva: Toggle REPL connection*
+;    (There is a button in the status bar for this)
+cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+clj꞉shadow.user꞉> 
+cljs꞉cljs.user꞉> 
+clj꞉shadow.user꞉> 
+#object[clojure.core$atom 0x70c64e2e "clojure.core$atom@70c64e2e"]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$atom 0x70c64e2e "clojure.core$atom@70c64e2e"]
+clj꞉app.todo-list꞉> 
+; Execution error (ClassCastException) at app.todo-list/eval54790 (REPL:0).
+; class clojure.core$atom cannot be cast to class java.util.concurrent.Future (clojure.core$atom is in unnamed module of loader 'app'; java.util.concurrent.Future is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Var$Unbound 0x3f9e9be2 "Unbound: #'app.todo-list/state"]
+clj꞉app.todo-list꞉> 
+; Execution error (ClassCastException) at app.todo-list/eval54792 (REPL:0).
+; class clojure.lang.Var$Unbound cannot be cast to class java.util.concurrent.Future (clojure.lang.Var$Unbound is in unnamed module of loader 'app'; java.util.concurrent.Future is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+; Execution error (ClassCastException) at app.todo-list/eval54794 (REPL:0).
+; class clojure.lang.Var$Unbound cannot be cast to class java.util.concurrent.Future (clojure.lang.Var$Unbound is in unnamed module of loader 'app'; java.util.concurrent.Future is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+; Execution error (ClassCastException) at app.todo-list/eval54796 (REPL:0).
+; class clojure.lang.Var$Unbound cannot be cast to class java.util.concurrent.Future (clojure.lang.Var$Unbound is in unnamed module of loader 'app'; java.util.concurrent.Future is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+; Execution error (ClassCastException) at app.todo-list/eval54798 (REPL:0).
+; class clojure.lang.Var$Unbound cannot be cast to class java.util.concurrent.Future (clojure.lang.Var$Unbound is in unnamed module of loader 'app'; java.util.concurrent.Future is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+0
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (ClassNotFoundException) compiling at (src/app/todo_list.cljc:0:0).
+; Atom-test.
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:88:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:88:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+; Execution error (IllegalStateException) at app.todo-list/eval55890 (REPL:88).
+; Attempting to call unbound fn: #'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:88:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+3
+clj꞉app.todo-list꞉> 
+#'app.todo-list/state
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x69ae2b05 {:status :ready, :val 3}]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+; Execution error (ExceptionInfo) at app.todo-list/eval56187 (REPL:79).
+; Invalid e/watch (use from Electric code only, maybe you forgot a e/def?)
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:90:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:90:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:90:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+; Syntax error (IllegalArgumentException) compiling new at (src/app/todo_list.cljc:90:3).
+; Unable to resolve classname: Atom-test
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Atom-test
+clj꞉app.todo-list꞉> 
+cljs꞉cljs.user꞉> 
+(js/alert "Hello World!")
+; Syntax error compiling at (.calva/output-window/output.calva-repl:214:1).
+; No such namespace: js
+cljs꞉cljs.user꞉> 
+0
+cljs꞉app.todo-list꞉> 
+0
+cljs꞉app.todo-list꞉> 
+0
+cljs꞉app.todo-list꞉> 
+3
+cljs꞉app.todo-list꞉> 
+3
+cljs꞉app.todo-list꞉> 
+-3
+cljs꞉app.todo-list꞉> 
+-2
+cljs꞉app.todo-list꞉> 
+-1
+cljs꞉app.todo-list꞉> 
+0
+cljs꞉app.todo-list꞉> 
+1
+cljs꞉app.todo-list꞉> 
+2
+cljs꞉app.todo-list꞉> 
+3
+cljs꞉app.todo-list꞉> 
+4
+cljs꞉app.todo-list꞉> 
+5
+cljs꞉app.todo-list꞉> 
+6
+cljs꞉app.todo-list꞉> 
+7
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+cljs꞉app.todo-list꞉> 
+[0 0 0 0 0]
+cljs꞉app.todo-list꞉> 
+[0 0 0 0 0]
+cljs꞉app.todo-list꞉> 
+[0 0 0 0 0 3]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+cljs꞉app.todo-list꞉> 
+[[203 138] [201 195] [201 196] [201 196] [201 196]]
+cljs꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+cljs꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+cljs꞉app.todo-list꞉> 
+; Syntax error macroexpanding hyperfiddle.electric/local at (src/app/todo_list.cljc:48:3).
+; Unable to resolve symbol: hyperfiddle.electric-dom2/new-node
+cljs꞉app.todo-list꞉> 
+; Syntax error macroexpanding hyperfiddle.electric/local at (src/app/todo_list.cljc:48:3).
+; Unable to resolve symbol: Canvas.
+cljs꞉app.todo-list꞉> 
+; Syntax error macroexpanding hyperfiddle.electric/local at (src/app/todo_list.cljc:48:3).
+; Unable to resolve symbol: hyperfiddle.electric-dom2/new-node
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[]
+cljs꞉app.todo-list꞉> 
+[[203 138] [201 195] [356 147] [355 151] [352 156] [349 160] [345 167] [340 174] [322 202] [308 220] [300 229] [296 233] [294 235] [292 236] [291 237] [291 236] [291 232] [295 226] [300 218] [307 209] [361 153] [374 140] [374 140] [374 140] [372 142] [370 145] [367 146] [365 148] [363 149] [360 152] [320 158] [313 157] [307 154] [300 151] [294 149] [288 147] [281 146] [276 145] [270 144] [265 143] [261 143] [256 143] [254 143] [251 143] [248 143] [245 142] [243 141] [241 141] [240 140] [239 139] [239 138] [238 137] [237 136] [237 135] [237 135] [237 136] [237 137] [238 138] [238 138] [239 139] [240 140] [242 141] [244 143] [247 144] [250 146] [253 148] [257 150] [265 156] [271 160] [277 164] [283 168] [289 171] [295 174] [302 177] [308 179] [313 181] [319 182] [321 183] [325 183] [329 183] [332 183] [336 183] [336 184] [335 185] [334 185] [334 185] [334 186] [333 186] [332 187] [331 187] [330 187] [329 187] [328 186] [327 186] [325 185] [323 185] [321 185] [318 185] [315 185] [313 185] [311 185] [308 185] [306 185] [304 185] [303 185] [302 185] [302 186] [303 187] [304 189] [306 190] [338 201] [350 202] [479 205] [550 203] [558 203] [586 202] [596 210] [598 216] [591 225] [568 245] [563 249] [548 256] [545 257] [530 256] [508 248] [460 216] [453 209] [437 183] [438 170] [441 162] [444 158] [460 140] [464 137] [487 125] [513 123] [518 123] [547 119] [570 118] [582 124] [584 125] [588 128] [589 130] [589 134] [588 134] [586 137] [584 137] [586 137] [594 136] [603 133] [614 130] [627 127] [640 124] [654 121] [680 116] [711 112] [656 162] [488 132] [488 132] [485 136] [483 137] [481 139] [477 141] [472 144] [469 145] [464 147] [460 149] [456 150] [451 152] [447 153] [438 155] [434 156] [429 158] [424 160] [418 162] [407 167] [402 168] [400 169] [396 171] [390 173] [387 175] [384 177] [381 178] [374 181] [371 183] [367 184] [364 186] [359 188] [355 190] [351 192] [346 193] [342 194] [334 197] [329 198] [325 198] [312 200] [302 202] [278 206] [266 208] [253 209] [240 212] [226 213] [221 214] [209 214] [198 215] [188 216] [180 216] [173 216] [166 216] [143 218] [142 218] [142 217] [141 215] [140 213] [139 210] [126 177] [108 136] [105 130] [95 109] [89 82] [83 65] [83 63] [78 56] [74 51] [74 50] [72 48] [72 48] [72 49] [72 49] [72 50] [73 50] [73 51] [73 52] [73 53] [74 53] [74 54] [74 54] [75 55] [76 56] [76 57] [77 58] [77 59] [78 60] [79 61] [80 62] [81 64] [82 65] [84 66] [85 68] [87 70] [91 73] [92 75] [94 77] [99 82] [103 87] [105 91] [107 93] [108 95] [111 100] [112 101] [113 104] [114 106] [115 109] [119 115] [119 118] [121 121] [121 123] [122 125] [123 128] [124 130] [125 133] [126 135] [126 136] [127 139] [128 142] [129 144] [129 147] [130 150] [130 151] [131 154] [132 157] [133 159] [134 162] [135 164] [136 167] [137 170] [138 172] [142 188] [144 200] [145 202] [146 212] [148 224] [148 226] [148 226] [148 225] [148 225] [148 224] [148 223] [148 222] [148 220] [148 217] [148 213] [148 208] [147 203] [146 192] [144 180] [144 175] [142 168] [141 164] [140 159] [139 155] [138 152] [138 151] [137 150] [137 149] [137 148] [136 148] [135 147] [133 145] [132 143] [130 137] [128 132] [124 119] [120 109] [119 106] [116 102] [113 98] [110 94] [107 91] [100 83] [97 79] [94 75] [92 71] [91 69] [90 66] [89 63] [88 61] [88 59] [87 58] [87 57] [87 57] [87 57] [87 57] [86 57] [86 56] [86 56] [86 56] [86 56] [87 58] [89 60] [90 63] [92 66] [93 69] [98 81] [100 85] [102 91] [105 97] [107 103] [109 109] [112 119] [114 123] [115 128] [117 132] [118 136] [121 144] [123 148] [125 152] [129 160] [131 164] [141 184] [142 187] [144 191] [148 198] [150 203] [151 206] [153 210] [154 212] [156 215] [157 217] [158 220] [159 222] [160 223] [161 225] [161 226] [162 227] [163 228] [164 229] [165 229] [165 230] [166 230] [166 230] [166 229] [166 227] [167 226] [167 225] [168 224] [169 223] [170 222] [175 219] [177 217] [181 215] [183 213] [186 210] [190 207] [194 204] [197 200] [201 197] [205 194] [209 190] [213 186] [216 183] [220 179] [224 176] [227 172] [231 169] [235 165] [239 162] [242 158] [249 152] [252 150] [255 148] [258 146] [261 143] [263 141] [266 139] [271 134] [273 133] [277 130] [296 114] [312 103] [316 100] [328 91] [330 90] [343 81] [352 76] [353 76] [359 73] [364 72] [366 70] [367 70] [369 69] [370 69] [369 69] [369 70] [369 72] [370 74] [370 76] [371 77] [372 80] [374 83] [376 87] [378 90] [380 92] [382 94] [383 95] [385 97] [387 99] [389 101] [391 102] [393 104] [395 105] [397 107] [398 109] [400 111] [401 112] [403 114] [404 116] [405 117] [406 119] [407 121] [408 123] [408 124] [410 126] [411 128] [412 130] [413 131] [414 133] [415 135] [416 137] [417 139] [418 140] [419 142] [421 145] [422 147] [423 148] [425 151] [426 155] [427 156] [428 158] [429 160] [430 162] [432 164] [433 167] [435 171] [440 179] [442 182] [443 183] [445 188] [447 191] [449 194] [451 197] [453 200] [455 203] [456 206] [462 214] [463 216] [477 232] [479 235] [482 237] [484 239] [486 241] [487 242] [488 243] [490 244] [490 245] [490 246] [491 246] [491 247] [493 248] [493 249] [494 250] [494 251] [494 250] [494 248] [495 246] [495 245] [496 244] [498 238] [499 237] [501 235] [501 233] [505 228] [507 225] [509 222] [509 220] [511 218] [512 216] [519 207] [521 204] [527 190] [528 187] [529 183] [530 180] [534 170] [535 167] [537 162] [540 153] [541 150] [542 147] [544 144] [545 140] [548 133] [551 127] [556 118] [557 116] [559 114] [561 111] [562 109] [565 106] [566 104] [566 103] [569 101] [570 98] [571 98] [571 98] [570 98] [569 98] [550 104] [544 106] [531 110] [525 110] [509 107] [507 106] [497 104] [494 104] [476 103] [468 101] [467 101] [449 101] [445 102] [421 102] [403 97] [387 87] [386 86] [380 85] [377 84] [375 83] [375 83] [375 83] [375 84] [375 87] [375 91] [375 92] [376 96] [376 99] [376 104] [376 106] [376 109] [376 114] [376 118] [376 122] [376 133] [376 136] [376 138] [376 141] [376 143] [376 146] [376 147] [376 152] [376 154] [376 156] [376 169] [376 171] [376 175] [376 178] [376 180] [376 201] [376 220] [376 238] [376 249] [376 250] [376 257] [376 258] [376 262] [376 263] [377 264] [377 264] [377 264] [376 264] [373 264] [370 264] [367 264] [365 264] [361 264] [358 263] [355 262] [353 262] [350 261] [344 260] [339 259] [337 259] [334 258] [332 258] [330 258] [328 257] [324 256] [323 256] [321 255] [318 255] [317 254] [314 253] [312 253] [311 252] [307 252] [302 250] [299 250] [297 249] [293 249] [289 248] [287 248] [285 248] [283 248] [276 246] [272 246] [270 246] [267 245] [264 245] [261 245] [258 245] [247 245] [244 245] [241 245] [237 245] [233 245] [230 245] [227 245] [223 245] [213 244] [195 239] [193 239] [190 237] [188 237] [186 236] [184 236] [182 235] [180 235] [179 235] [174 234] [173 234] [169 234] [168 234] [167 234] [164 234] [164 234] [164 232] [166 226] [167 223] [168 218] [169 213] [170 207] [171 202] [172 199] [173 195] [174 192] [175 187] [176 185] [177 181] [179 177] [180 175] [181 173] [183 169] [184 167] [184 165] [186 161] [186 159] [188 156] [190 151] [190 149] [192 145] [193 143] [194 141] [194 140] [195 138] [195 136] [196 134] [197 132] [198 129] [199 127] [200 125] [219 83] [225 68] [228 63] [229 62] [229 62] [229 63] [229 64] [229 65] [229 66] [229 68] [229 69] [229 71] [229 73] [229 75] [228 77] [228 78] [227 80] [227 81] [226 82] [226 83] [225 84] [224 86] [224 87] [224 88] [223 88] [223 89] [222 91] [222 92] [222 94] [221 95] [221 96] [220 98] [219 100] [219 101] [217 105] [216 107] [216 110] [216 111] [215 112] [215 113] [215 114] [214 115] [214 116] [213 117] [213 119] [212 120] [211 122] [211 123] [211 124] [211 125] [211 126] [211 127] [211 128] [210 128] [210 129] [210 130] [209 131] [209 132] [209 133] [208 133] [208 134] [208 135] [207 135] [207 136] [207 137] [207 138] [206 138] [206 139] [206 140] [205 140] [205 141] [202 152] [199 160] [199 161] [197 165] [196 167] [196 168] [195 168] [195 171] [193 175] [192 179] [189 183] [186 188] [183 192] [183 193] [177 199] [173 205] [171 208] [170 209] [165 214] [164 216] [153 226] [141 237] [129 243] [122 246] [121 246] [116 249] [114 249] [107 252] [106 252] [97 254] [89 254] [88 254] [78 254] [77 253] [68 249] [67 249] [62 244] [59 239] [58 233] [58 232] [57 228] [57 224] [57 217] [57 211] [57 208] [58 207] [60 202] [61 201] [65 197] [66 196] [72 193] [79 190] [81 190] [86 188] [89 187] [95 184] [110 181] [120 179] [121 178] [136 173] [139 172] [156 167] [181 161] [206 154] [209 153] [225 146] [228 145] [241 139] [243 138] [254 132] [271 125] [290 118] [293 116] [307 111] [309 110] [321 105] [340 96] [343 95] [367 81] [371 79] [393 69] [409 62] [415 59] [418 58] [422 56] [424 54] [427 53] [460 35] [463 34] [463 33] [463 32] [463 33] [463 35] [463 40] [464 42] [464 44] [465 47] [466 49] [467 51] [468 53] [469 55] [470 57] [471 58] [472 60] [473 62] [474 64] [476 67] [480 72] [481 73] [482 75] [485 79] [485 80] [486 81] [487 83] [488 85] [488 86] [489 88] [489 90] [490 93] [491 95] [491 96] [492 97] [493 99] [493 101] [493 102] [494 104] [494 106] [495 109] [496 111] [496 114] [497 116] [498 120] [499 122] [501 129] [502 132] [502 134] [502 138] [503 142] [503 145] [503 150] [503 155] [493 236] [492 237] [460 252] [441 251] [439 251] [432 251] [431 251] [422 252] [419 252] [405 252] [391 252] [382 252] [380 252] [372 254] [363 254] [350 254] [349 254] [337 257] [335 257] [322 261] [315 263] [314 263] [314 262] [314 261] [314 258] [314 257] [314 245] [314 243] [314 242] [314 242] [314 241] [314 238] [314 237] [314 236] [314 235] [314 233] [314 218] [313 216] [312 205] [311 198] [311 197] [308 184] [306 180] [301 156] [298 140] [297 136] [294 133] [294 132] [292 131] [292 130] [291 130] [290 130] [289 130] [287 130] [286 129] [285 128] [284 127] [281 124] [280 123] [279 123] [278 122] [277 121] [277 120] [276 119] [275 119] [274 118] [273 117] [272 116] [270 115] [268 114] [267 114] [265 113] [263 111] [261 110] [260 109] [258 108] [257 107] [256 107] [254 105] [252 104] [249 103] [247 101] [246 101] [245 100] [244 99] [242 98] [241 98] [240 97] [239 97] [238 97] [237 97] [236 97] [234 96] [232 95] [229 94] [226 93] [223 91] [219 88] [215 85] [211 82] [208 79] [206 78] [203 76] [178 60] [176 60] [164 53] [163 53] [160 50] [158 49] [157 48] [157 48] [157 47] [156 47] [156 48] [156 50] [156 52] [156 55] [156 57] [156 61] [155 68] [154 72] [154 75] [154 81] [154 83] [154 86] [154 88] [154 89] [154 91] [154 93] [154 95] [154 99] [154 101] [154 102] [154 104] [154 106] [154 108] [154 110] [154 111] [155 113] [155 114] [155 116] [155 117] [156 118] [156 119] [156 120] [157 122] [157 124] [157 125] [158 126] [158 127] [158 128] [158 130] [159 132] [159 135] [160 137] [160 139] [160 141] [161 143] [161 147] [161 151] [161 152] [161 153] [161 155] [162 156] [162 158] [162 159] [162 160] [162 161] [163 162] [163 163] [163 164] [163 165] [167 185] [167 185] [173 185] [178 185] [185 185] [195 185] [207 185] [221 185] [239 185] [271 185] [345 193] [417 211] [433 216] [460 223] [508 233] [520 234] [521 234] [522 234] [524 234] [525 233] [527 233] [529 232] [531 232] [532 231] [534 230] [536 229] [538 227] [541 226] [542 225] [545 223] [548 222] [554 220] [555 219] [558 218] [560 218] [563 217] [565 216] [567 215] [610 172] [621 151] [631 133] [632 132] [639 115] [642 106] [643 105] [645 93] [645 91] [645 83] [644 83] [633 80] [619 80] [615 80] [603 80] [599 80] [588 80] [587 81] [573 86] [572 87] [565 93] [550 120] [543 152] [542 158] [542 201] [541 209] [523 263] [502 295] [455 301] [450 300] [415 286] [401 264] [410 224] [412 221] [430 209] [435 207] [475 192] [486 189] [544 177] [556 175] [618 164] [656 150] [661 138] [660 136] [616 110] [549 89] [542 87] [498 100] [447 163] [430 208] [432 222] [433 223] [435 226] [436 226] [452 228] [466 228] [443 222] [371 188] [371 187] [372 186] [383 175] [386 172] [390 167] [393 163] [396 161] [402 154] [403 153] [406 151] [410 149] [414 147] [417 146] [418 145] [419 144] [421 144] [422 143] [423 141] [425 138] [427 135] [427 134] [427 133] [427 132] [427 133] [427 134] [428 135] [429 137] [432 139] [437 143] [444 147] [452 150] [484 164] [502 171] [511 175] [528 183] [544 190] [551 193] [552 193] [557 196] [564 200] [574 204] [713 287]]
+cljs꞉app.todo-list꞉> 
+[[1 2] [3 4]]
+cljs꞉app.todo-list꞉> 
+[[1 2] [3 4]]
+cljs꞉app.todo-list꞉> 
+""
+cljs꞉app.todo-list꞉> 
+; Syntax error compiling def at (src/user.cljs:7:1).
+; Too many arguments to def
+cljs꞉user꞉> 
+; Syntax error compiling at (src/user.cljs:27:3).
+; No such namespace: e
+cljs꞉user꞉> 
+; Syntax error compiling at (src/user.cljs:27:3).
+; No such namespace: e
+cljs꞉user꞉> 
+; Syntax error compiling at (src/user.cljs:27:3).
+; No such namespace: e
+cljs꞉user꞉> 
+; Syntax error compiling at (src/user.cljs:27:3).
+; No such namespace: e
+cljs꞉user꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:38:3).
+; No such namespace: js
+cljs꞉app.todo-list꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:38:3).
+; No such namespace: js
+cljs꞉app.todo-list꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:38:3).
+; No such namespace: js
+cljs꞉app.todo-list꞉> 
+; Syntax error compiling at (src/user.cljs:22:3).
+; No such namespace: js
+cljs꞉user꞉> 
+#'app.todo-list/gen-uuid
+cljs꞉app.todo-list꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:0:0).
+; No such var: e/o
+cljs꞉app.todo-list꞉> 
+; nREPL Connection was closed
+; Connecting using "Generic" project type.
+; You can make Calva auto-select this:
+; "calva.autoSelectReplConnectProjectType": "Generic"
+;   - See https://calva.io/connect/#auto-select-project-type
+; 
+; Connecting ...
+; No nrepl port file found.
+; Hooking up nREPL sessions...
+; Connected session: clj
+; TIPS:
+;   - You can edit the contents here. Use it as a REPL if you like.
+;   - `alt+enter` evaluates the current top level form.
+;   - `ctrl+enter` evaluates the current form.
+;   - `alt+up` and `alt+down` traverse up and down the REPL command history
+;      when the cursor is after the last contents at the prompt
+;   - Clojure lines in stack traces are peekable and clickable.
+clj꞉shadow.user꞉> 
+#'app.todo-list/!users
+clj꞉app.todo-list꞉> 
+{}
+clj꞉app.todo-list꞉> 
+{}
+clj꞉app.todo-list꞉> 
+[[718 256]]
+clj꞉app.todo-list꞉> 
+{}
+clj꞉app.todo-list꞉> 
+{:id "111", :x 100, :y 100}
+clj꞉app.todo-list꞉> 
+{:id "111", :x 100, :y 100}
+clj꞉app.todo-list꞉> 
+; Execution error (IllegalStateException) at app.todo-list/eval39233 (REPL:51).
+; Attempting to call unbound fn: #'app.todo-list/set-user-mouse-down!
+clj꞉app.todo-list꞉> 
+#'app.todo-list/set-user-mouse-down!
+clj꞉app.todo-list꞉> 
+; Execution error (IllegalStateException) at app.todo-list/eval39235 (REPL:51).
+; Attempting to call unbound fn: #'app.todo-list/set-user-mouse-down!
+clj꞉app.todo-list꞉> 
+#'app.todo-list/gen-uuid
+clj꞉app.todo-list꞉> 
+; Syntax error reading source at (REPL:17:46).
+; Map literal must contain an even number of forms
+clj꞉app.todo-list꞉> 
+#'app.todo-list/get-user
+clj꞉app.todo-list꞉> 
+; Syntax error reading source at (REPL:17:46).
+; Map literal must contain an even number of forms
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!users
+clj꞉app.todo-list꞉> 
+#'app.todo-list/get-user
+clj꞉app.todo-list꞉> 
+#'app.todo-list/get-user
+clj꞉app.todo-list꞉> 
+#'app.todo-list/get-user
+clj꞉app.todo-list꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:50:3).
+; No such namespace: js
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40767
+clj꞉app.todo-list꞉> 
+#'app.todo-list/set-user-mousedown!
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!users
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+#'app.todo-list/set-user-mousedown!
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+#'app.todo-list/set-user-mousedown!
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100})
+clj꞉app.todo-list꞉> 
+; Error printing return value (IllegalArgumentException) at clojure.lang.RT/seqFrom (RT.java:557).
+; Don't know how to create ISeq from: app.todo_list$set_user_mouse_down_BANG_$fn__40867
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+; Error printing return value (ArityException) at clojure.lang.AFn/throwArity (AFn.java:429).
+; Wrong number of args (0) passed to: clojure.lang.PersistentArrayMap
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+; Syntax error compiling at (src/app/todo_list.cljc:22:3).
+; Can't take value of a macro: #'clojure.core/fn
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user-mousedown
+clj꞉app.todo-list꞉> 
+({:id "111", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+#'app.todo-list/assoc-user!
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 100, :y 100, :mousedown true})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+[{:id "0", :x 100, :y 100, :mousedown false}]
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+({:id "0", :x 1, :y 100, :mousedown false})
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!vertices
+clj꞉app.todo-list꞉> 
+[[203 138] [201 195]]
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/inc (Numbers.java:139).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+clj꞉app.todo-list꞉> 
+()
+clj꞉app.todo-list꞉> 
+[[1 2] [3 4]]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+clj꞉app.todo-list꞉> 
+[[1 2] [3 4] [1 9]]
+clj꞉app.todo-list꞉> 
+[[1 2] [3 4] [1 9] [1 9]]
+clj꞉app.todo-list꞉> 
+[[1 2] [3 4] [1 9] [1 9] [1 9]]
+clj꞉app.todo-list꞉> 
+; Execution error (ArityException) at app.todo-list/eval47999 (REPL:25).
+; Wrong number of args (3) passed to: clojure.core/take
+clj꞉app.todo-list꞉> 
+#'app.todo-list/Canvas
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!vertices
+clj꞉app.todo-list꞉> 
+[[203 138] [201 195]]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$swap_BANG_ 0x676d3d71 "clojure.core$swap_BANG_@676d3d71"]
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.lang.PersistentVector cannot be cast to class java.lang.Number (clojure.lang.PersistentVector is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x2ccdfd5b "clojure.core$take$fn__5974$fn__5975@2ccdfd5b"]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x7f7622e2 "clojure.core$take$fn__5974$fn__5975@7f7622e2"]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x7e671461 "clojure.core$take$fn__5974$fn__5975@7e671461"]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x7e671461 "clojure.core$take$fn__5974$fn__5975@7e671461"]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x7e671461 "clojure.core$take$fn__5974$fn__5975@7e671461"]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!vertices
+clj꞉app.todo-list꞉> 
+#'app.todo-list/!vertices
+clj꞉app.todo-list꞉> 
+[[203 138] [201 195]]
+clj꞉app.todo-list꞉> 
+[[203 138] [201 195]]
+clj꞉app.todo-list꞉> 
+#object[clojure.core$take$fn__5974$fn__5975 0x26817145 "clojure.core$take$fn__5974$fn__5975@26817145"]
+clj꞉app.todo-list꞉> 
+; Error printing return value (ClassCastException) at clojure.lang.Numbers/isPos (Numbers.java:123).
+; class clojure.core$take$fn__5974$fn__5975 cannot be cast to class java.lang.Number (clojure.core$take$fn__5974$fn__5975 is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap')
+clj꞉app.todo-list꞉> 
+[[1 2] [3 4]]
+clj꞉app.todo-list꞉> 
+#'app.todo-list/mousedown
+clj꞉app.todo-list꞉> 
+#'app.todo-list/emoji
+clj꞉app.todo-list꞉> 
+#object[clojure.lang.Atom 0x37b63b82 {:status :ready, :val "🫥"}]
+clj꞉app.todo-list꞉> 
+"🫥"
+clj꞉app.todo-list꞉> 
+"🫥"
+clj꞉app.todo-list꞉> 
+; nREPL Connection was closed

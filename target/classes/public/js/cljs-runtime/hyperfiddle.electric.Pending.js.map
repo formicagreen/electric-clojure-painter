@@ -1,0 +1,9 @@
+{
+"version":3,
+"file":"hyperfiddle.electric.Pending.js",
+"lineCount":4,
+"mappings":"AAAAA,IAAKC,CAAAA,OAAL,CAAa,8BAAb,CAAA;AAKAC,WAAYC,CAAAA,QAASC,CAAAA,OAArB,GAA+BC,QAAQ,EAAG;CAA1C;;",
+"sources":["hyperfiddle/electric/Pending.js"],
+"sourcesContent":["goog.provide('hyperfiddle.electric.Pending');\n\n/**\n * @constructor\n */\nhyperfiddle.electric.Pending = function() {};"],
+"names":["goog","provide","hyperfiddle","electric","Pending","hyperfiddle.electric.Pending"]
+}

@@ -1,0 +1,9 @@
+{
+"version":3,
+"file":"hyperfiddle.electric.Remote.js",
+"lineCount":4,
+"mappings":"AAAAA,IAAKC,CAAAA,OAAL,CAAa,6BAAb,CAAA;AAKAC,WAAYC,CAAAA,QAASC,CAAAA,MAArB,GAA8BC,QAAQ,EAAG;CAAzC;;",
+"sources":["hyperfiddle/electric/Remote.js"],
+"sourcesContent":["goog.provide('hyperfiddle.electric.Remote');\n\n/**\n * @constructor\n */\nhyperfiddle.electric.Remote = function() {};"],
+"names":["goog","provide","hyperfiddle","electric","Remote","hyperfiddle.electric.Remote"]
+}

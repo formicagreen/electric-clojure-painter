@@ -1,0 +1,9 @@
+{
+"version":3,
+"file":"hyperfiddle.electric.Failure.js",
+"lineCount":5,
+"mappings":"AAAAA,IAAKC,CAAAA,OAAL,CAAa,8BAAb,CAAA;AAKAC,WAAYC,CAAAA,QAASC,CAAAA,OAArB,GAA+BC,QAAQ,CAACC,CAAD,CAAI;AACzC,MAAKC,CAAAA,KAAL,GAAaD,CAAb;AADyC,CAA3C;;",
+"sources":["hyperfiddle/electric/Failure.js"],
+"sourcesContent":["goog.provide('hyperfiddle.electric.Failure');\n\n/**\n * @constructor\n */\nhyperfiddle.electric.Failure = function(e) {\n  this.error = e;\n};"],
+"names":["goog","provide","hyperfiddle","electric","Failure","hyperfiddle.electric.Failure","e","error"]
+}

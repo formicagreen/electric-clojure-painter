@@ -1,0 +1,9 @@
+{
+"version":3,
+"file":"missionary.Cancelled.js",
+"lineCount":5,
+"mappings":"AAAAA,IAAKC,CAAAA,OAAL,CAAa,sBAAb,CAAA;AAMAC,UAAWC,CAAAA,SAAX,GAAuBC,QAAQ,CAACC,OAAD,CAAU;AAOvC,MAAKA,CAAAA,OAAL,GAAeA,OAAf;AAPuC,CAAzC;;",
+"sources":["missionary/Cancelled.js"],
+"sourcesContent":["goog.provide('missionary.Cancelled');\n\n/**\n * @param {string} message\n * @constructor\n */\nmissionary.Cancelled = function(message) {\n  'use strict';\n\n  /**\n   * The error message.\n   * @const {string}\n   */\n  this.message = message;\n\n};\n"],
+"names":["goog","provide","missionary","Cancelled","missionary.Cancelled","message"]
+}
