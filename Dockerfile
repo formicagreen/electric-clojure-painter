@@ -13,4 +13,4 @@ COPY . /app
 
 CMD clojure -A:dev -X
 
-EXPOSE 8080
+EXPOSE 443

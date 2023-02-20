@@ -8,7 +8,7 @@
 (def shadow-release (delay @(requiring-resolve 'shadow.cljs.devtools.api/release)))
 
 (def electric-server-config
-  {:host "0.0.0.0", :port 8080, :resources-path "resources/public"})
+  {:host "0.0.0.0", :port 443, :resources-path "resources/public"})
 
 (defn -main [& args]
   (println "Starting Electric compiler and server...")
