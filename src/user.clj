@@ -4,14 +4,18 @@
 (def start-electric-server! (delay @(requiring-resolve 'hyperfiddle.electric-jetty-server/start-server!)))
 (def shadow-start! (delay @(requiring-resolve 'shadow.cljs.devtools.server/start!)))
 (def shadow-watch (delay @(requiring-resolve 'shadow.cljs.devtools.api/watch)))
+(def shadow-release (delay @(requiring-resolve 'shadow.cljs.devtools.api/release)))
 
 (def electric-server-config
   {:host "0.0.0.0", :port 8080, :resources-path "resources/public"})
 
 (defn main [& args]
   (println "Starting Electric compiler and server...")
-  (@shadow-start!) ; serves index.html as well
-  (@shadow-watch :dev) ; depends on shadow server
+  (@shadow-start!)
+  (comment  ; serves index.html as well
+  (@shadow-watch :dev))
+  (@shadow-release :prod)
+  ; depends on shadow server
   (def server (@start-electric-server! electric-server-config))
   (comment (.stop server)))
 

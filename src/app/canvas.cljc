@@ -1,8 +1,8 @@
-(ns app.todo-list
+(ns app.canvas
 
   ; trick shadow into ensuring that client/server always have the same version
   ; all .cljc files containing Electric code must have this line!
-  #?(:cljs (:require-macros app.todo-list)) ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+  #?(:cljs (:require-macros app.canvas)) ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
   (:require #?(:clj [datascript.core :as d]) ; database on server
             [hyperfiddle.electric :as e]
@@ -16,7 +16,7 @@
 
 (def current-emoji (atom "🐱"))
 
-(def emojis ["🐱" "🫥" "🐞" "🪙" "🕉" "🐍" "📞" "🌀" "🌰" "🕸" "🐶" "🐭" "🐹" "🧿" "♻️" "🏴‍☠️" "🧬"])
+(def emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
 
 (e/defn Canvas []
   (dom/style {:margin "0"
@@ -24,6 +24,7 @@
               :background "lightblue"                    
               :user-select "none"
               :font-size "30px"})
+  (dom/element "style" (dom/text "@keyframes fadeout { from { opacity: 1; } to { opacity: 0; } }"))
   (dom/div
    (dom/style {:width "100vw"
                :height "100vh"})
@@ -39,7 +40,7 @@
                                                         (take 10000
                                                               (conj v [x y e])))))))))
    (dom/div
-    (dom/style {:background "#0003"
+    (dom/style {:background "#0009"
                 :position "fixed"
                 :top "0"
                 :left "0"

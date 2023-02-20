@@ -12,3 +12,4 @@ report.html
 .lsp
 .clj-kondo
 target/*
+.DS_Store
