@@ -11,7 +11,6 @@
 (def version (or (:version project) "1.2.0"))
 (def class-dir "target/classes")
 (def basis (b/create-basis {:project "deps.edn"}))
-(def uber-file (format "target/%s-%s-standalone.jar" (name lib) version))
 
 (defn clean [_]
   (b/delete {:path "target"}))
@@ -24,7 +23,6 @@
                   :src-dirs ["src"]
                   :class-dir class-dir})
   (b/uber {:class-dir class-dir
-           :uber-file uber-file
+           :uber-file "target/uber.jar"
            :basis basis
            :main 'user}))
-

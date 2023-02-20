@@ -40,7 +40,8 @@
                                                         (take 10000
                                                               (conj v [x y e])))))))))
    (dom/div
-    (dom/style {:background "#0009"
+    (dom/style {:background "#fff5"
+                :backdrop-filter "blur(10px)"
                 :position "fixed"
                 :top "0"
                 :left "0"

@@ -8,17 +8,21 @@
         missionary/missionary {:mvn/version "b.27-SNAPSHOT"}
         org.clojure/clojure {:mvn/version "1.11.1"}
         org.clojure/clojurescript {:mvn/version "1.11.60"}
-        org.clojure/tools.logging {:mvn/version "1.2.4"}}
+        org.clojure/tools.logging {:mvn/version "1.2.4"}
+        thheller/shadow-cljs {:mvn/version "2.20.1"}}
  :aliases {:dev {:extra-deps
-                 {binaryage/devtools {:mvn/version "1.0.6"}
-                  thheller/shadow-cljs {:mvn/version "2.20.1"}}
+                 {binaryage/devtools {:mvn/version "1.0.6"}}
                  :jvm-opts
                  ["-Xss2m" ; https://github.com/hyperfiddle/photon/issues/11
-                  "-Xmx50m"
                   "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"
                   "-Dlogback.configurationFile=src/logback.xml"
                   "-XX:-OmitStackTraceInFastThrow" ;; RCF
                   "-XX:+UnlockDiagnosticVMOptions"
                   "-XX:+DebugNonSafepoints"]
-                 :exec-fn user/main
-                 :exec-args {}}}}
+                 :exec-fn user/-main
+                 :exec-args {}}
+
+ :build ;; added by neil
+ {:deps {io.github.clojure/tools.build {:git/tag "v0.9.3" :git/sha "e537cd1"}
+         slipset/deps-deploy {:mvn/version "0.2.0"}}
+  :ns-default build}}}
