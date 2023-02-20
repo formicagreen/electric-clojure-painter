@@ -20,7 +20,7 @@
                   "-XX:-OmitStackTraceInFastThrow" ;; RCF
                   "-XX:+UnlockDiagnosticVMOptions"
                   "-XX:+DebugNonSafepoints"]
-                 :exec-fn user/-main
+                 :exec-fn user/main
                  :exec-args {}}
 
  :build ;; added by neil

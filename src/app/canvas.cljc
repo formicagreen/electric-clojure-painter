@@ -10,11 +10,11 @@
             [hyperfiddle.electric-ui4 :as ui]
             [clojure.string :as str]))
 
-(def vertices (atom []))
+#?(:clj (defonce vertices (atom [])))
 
-(def mousedown (atom false))
+#?(:cljs (def mousedown (atom false)))
 
-(def current-emoji (atom "🐱"))
+#?(:cljs (defonce current-emoji (atom "🐱")))
 
 (def emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
 
