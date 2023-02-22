@@ -1,13 +1,13 @@
 (ns user ^:dev/always ; recompile (macroexpand) electricmain when any cljs src changes
   (:require
-    app.canvas
+    app.painter
     hyperfiddle.electric
     hyperfiddle.electric-dom2))
 
 (def electric-main
   (hyperfiddle.electric/boot ; Electric macroexpansion - Clojure to signals compiler
    (binding [hyperfiddle.electric-dom2/node js/document.body]
-     (app.canvas/Canvas.))))
+     (app.painter/App.))))
 
 (defonce reactor nil)
 

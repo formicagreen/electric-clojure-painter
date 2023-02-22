@@ -10,18 +10,20 @@
             [hyperfiddle.electric-ui4 :as ui]
             [clojure.string :as str]))
 
-#?(:clj (defonce vertices (atom [])))
+#?(:clj (defonce painted-emojis (atom [])))
 
 #?(:cljs (def mousedown (atom false)))
 
 #?(:cljs (defonce current-emoji (atom "🐱")))
 
-(def emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
+(def available-emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
 
-(e/defn Canvas []
+(e/defn App []
   (dom/style {:margin "0"
               :overflow "hidden"
-              :background "lightblue"                    
+              :background-image "linear-gradient(45deg, #cfcbb6 25%, transparent 25%), linear-gradient(-45deg, #cfcbb6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #cfcbb6 75%), linear-gradient(-45deg, transparent 75%, #cfcbb6 75%)"
+              :background-size "20px 20px"
+              :background-position "0 0, 0 10px, 10px -10px, -10px 0px"
               :user-select "none"
               :font-size "30px"})
   (dom/element "style" (dom/text "@keyframes fadeout { from { opacity: 1; } to { opacity: 0; } }"))
@@ -36,9 +38,9 @@
                                        e (e/watch current-emoji)]
                                    (e/server
                                     (when m
-                                      (swap! vertices (fn [v] 
-                                                        (take 10000
-                                                              (conj v [x y e])))))))))
+                                      (swap! painted-emojis (fn [v]
+                                                              (take 10000
+                                                                    (conj v [x y e])))))))))
    (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
@@ -47,24 +49,22 @@
                 :left "0"
                 :height "100vh"
                 :padding "10px"})
-    (e/for [emoji emojis]
+    (e/for [emoji available-emojis]
       (dom/div
        (dom/style {:cursor "pointer"})
        (dom/on "click" (e/fn [e] (reset! current-emoji emoji)))
        (dom/text emoji)))
     (dom/div
      (dom/style {:cursor "pointer" :padding-top "50px"})
-     (dom/on "click" (e/fn [e] (e/server (reset! vertices []))))
+     (dom/on "click" (e/fn [e] (e/server (reset! painted-emojis []))))
      (dom/text "🗑️")))
-   (dom/div
-    (e/for [vertex (e/server (reverse (e/watch vertices)))]
-      (dom/div
-       (dom/text (last vertex))
-       (dom/style {:position "absolute"
-                   :left (str (first vertex) "px")
-                   :top (str (second vertex) "px")
-                   :width "10px"
-                   :height "10px"
-                   :user-select "none"
-                   :z-index "-1"
-                   :pointer-events "none"}))))))
+   (dom/canvas
+    (dom/props {:width  "800"
+                :height "600"})
+    (dom/style {:background "white"})
+    (let [ctx (.getContext dom/node "2d")]
+      (e/for [vertex (e/server (e/watch painted-emojis))]
+        (let [x (first vertex)
+              y (second vertex)
+              e (last vertex)]
+          (.fillText ctx e x y)))))))
