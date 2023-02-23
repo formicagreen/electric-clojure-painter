@@ -8,17 +8,23 @@
             [hyperfiddle.electric :as e]
             [hyperfiddle.electric-dom2 :as dom]
             [hyperfiddle.electric-ui4 :as ui]
-            [clojure.string :as str]))
+            [hyperfiddle.api :as hf]
+            [clojure.string :as str]
+            [missionary.core :as m]))
 
-#?(:clj (defonce painted-emojis (atom [])))
+#?(:clj (defonce canvas-state (atom [])))
+
+#?(:clj (def users (atom {})))
 
 #?(:cljs (def mousedown (atom false)))
 
-#?(:cljs (defonce current-emoji (atom "🐱"))) 
+#?(:cljs (defonce current-emoji (atom "🐱")))
 
 #?(:cljs (defonce render-method (atom "canvas")))
 
 #?(:cljs (def scaling-factor (.-devicePixelRatio js/window)))
+
+(def paint-emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
 
 (def canvas-size 5000)
 
@@ -26,28 +32,27 @@
   (let [x (.-clientX e)
         y (.-clientY e)
         m (e/watch mousedown)
-        e (e/watch current-emoji)]
+        emoji (e/watch current-emoji)
+        session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"]))]
     (e/server
-     (when m
-       (swap!
-        painted-emojis
-        (fn [v]
-          (take 10000
-                (conj v [x y e]))))))))
-
-
-(def available-emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
+     (swap! users assoc session-id [x y])
+     (when m 
+       (swap! canvas-state
+        (fn [v] (take 2000 
+                      (conj v [(- x 15) (+ y 15) emoji]))))))))
 
 (e/defn DOM-canvas []
   (dom/div
-   (e/for [vertex (e/server (reverse (e/watch painted-emojis)))]
+   (e/for [emoji (e/server (reverse (e/watch canvas-state)))]
      (dom/div
-      (dom/text (last vertex))
+      (dom/text (last emoji))
       (dom/style {:position "absolute"
-                  :left (str (first vertex) "px")
-                  :top (str (second vertex) "px")
+                  :left (str (first emoji) "px")
+                  :top (str (second emoji) "px")
                   :width "10px"
                   :height "10px"
+                  :padding-bottom "10px"
+                  :line-height "0px"
                   :user-select "none"
                   :pointer-events "none"})))))
 
@@ -59,22 +64,32 @@
                :style {:width (str canvas-size "px")
                        :height (str canvas-size "px")}})
    (let [ctx (.getContext dom/node "2d")]
-     (e/for [vertex (e/server (e/watch painted-emojis))]
-       (let [x (* (first vertex) scaling-factor)
-             y (* (second vertex) scaling-factor)
-             emoji (last vertex)
+     (e/for [emoji (e/server (e/watch canvas-state))]
+       (let [x (* (first emoji) scaling-factor)
+             y (* (second emoji) scaling-factor)
+             emoji (last emoji)
              font-size (str (int (* 30 scaling-factor)) "px")]
          (set! (.-font ctx) (str font-size " sans-serif"))
          (.fillText ctx emoji x y))))))
+
+(e/defn Button [text fn]
+  (dom/div
+   (dom/props {:class "hover"})
+   (dom/on "click" fn)
+   (dom/text text)))
 
 (e/defn App []
   (dom/style {:margin "0"
               :overflow "hidden"
               :user-select "none"
               :background "lightblue"
+              :cursor "none"
               :font-family "sans-serif"
               :font-size "30px"})
-  (dom/element "style" (dom/text "@keyframes fadeout { from { opacity: 1; } to { opacity: 0; } }"))
+  (dom/element "style"
+               (dom/text "* { box-sizing: border-box; }
+                          .hover { transition: all ease 0.1s; }
+                          .hover:hover { transform: scale(1.2); }"))
   (dom/div
    (dom/style {:width "100vw"
                :height "100vh"})
@@ -88,47 +103,73 @@
                 :top "0"
                 :left "0"
                 :height "100vh"
+                :z-index "1"
+                :display "flex"
+                :flex-direction "column"
+                :justify-content "space-between"
                 :padding "10px"})
-    (e/for [emoji available-emojis]
-      (dom/div
-       (dom/style {:cursor "pointer"})
-       (dom/on "click" (e/fn [e] (reset! current-emoji emoji)))
-       (dom/text emoji)))
-    (dom/div
-     (dom/style {:cursor "pointer" :padding-top "50px"})
-     (dom/on "click" (e/fn [e] 
-                       (e/server (reset! painted-emojis [])) 
-                       (when (= "canvas" @render-method)
-                         (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000)))))
-     (dom/text "🗑️")))
-   (dom/div 
+    (dom/div (e/for [emoji paint-emojis]
+               (Button. emoji (e/fn [e] (reset! current-emoji emoji)))))
+    (Button. "🗑️" (e/fn [e]
+                     (e/server (reset! canvas-state []))
+                     (when (= "canvas" @render-method)
+                       (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
+   (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
                 :position "fixed"
-                :top "0"
-                :right "0"
-                :padding "20px"
-                :border-bottom-left-radius "10px"
+                :top "10px"
+                :right "10px"
+                :padding "10px"
+                :border-radius "10px"
                 :display "flex"
                 :flex-direction "column"
                 :text-align "center"
+                :box-shadow "0 0 5px rgba(0, 0, 0, 0.14)"
+                :z-index "1"
                 :font-size "16px"
-                :gap "10px"})
-    (dom/div 
-     (dom/style {:color "gray"})
-     (dom/text "Render method"))
+                :gap "5px"})
     (e/for [method ["canvas" "dom"]]
       (dom/div
-       (dom/style {:cursor "pointer"
-                   :background "green"
-                   :border-radius "100px"
-                   :color "white"
-                   :padding "5px 10px"
-                   :text-shadow (if (= (e/watch render-method) method)
-                                  "rgb(0 201 255) 1px 2px 3px"
-                                  "none")})
+       (let [active (= (e/watch render-method) method)]
+         (dom/style {:border-radius "5px"
+                     :text-transform "uppercase"
+                     :letter-spacing "2px"
+                     :padding "5px 10px"
+                     :color (if (true? active) "white" "#666")
+                     :background (if (true? active) "green" "none")}))
        (dom/on "click" (e/fn [e] (reset! render-method method)))
        (dom/text method))))
    (case (e/watch render-method)
      "dom" (DOM-canvas.)
-     "canvas" (Canvas-canvas.)))) 
+     "canvas" (Canvas-canvas.)))
+  (e/for [[session-id position] (e/server (e/watch users))]
+    (dom/div
+     (dom/style {:position "absolute"
+                 :left (str (- (first position) 15) "px")
+                 :top (str (- (second position) 15) "px")
+                 :z-index "2"
+                 :width "10px"
+                 :height "10px"
+                 :padding-bottom "10px"
+                 :pointer-events "none"})
+     (dom/text "👁️")))
+  
+  (e/server
+            ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle
+   (let [session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"]))
+         >x (->> (m/observe (fn mount [!]
+                              (swap! users assoc session-id [nil nil])
+                              (println `mount session-id @users)
+                              (fn unmount []
+                                (swap! users dissoc session-id)
+                                (println `unmount session-id @users))))
+                 (m/reductions {} nil))]
+              ; Missionary flows are booted with `new` (monadic join)
+              ; This works because Electric is essentially a Clojure-to-Missionary compiler,
+              ; so this actually typechecks from a compiler internals perspective.
+     (new >x))))
+
+(comment
+  @users
+  )
