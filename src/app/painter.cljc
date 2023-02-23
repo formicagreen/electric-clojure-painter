@@ -49,7 +49,6 @@
                   :width "10px"
                   :height "10px"
                   :user-select "none"
-                  :z-index "-1"
                   :pointer-events "none"})))))
 
 (e/defn Canvas-canvas []
