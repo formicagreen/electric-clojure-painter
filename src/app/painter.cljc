@@ -28,19 +28,6 @@
 
 (def canvas-size 5000)
 
-(e/defn mousemove [e]
-  (let [x (.-clientX e)
-        y (.-clientY e)
-        m (e/watch mousedown)
-        emoji (e/watch current-emoji)
-        session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"]))]
-    (e/server
-     (swap! users assoc session-id [x y])
-     (when m 
-       (swap! canvas-state
-        (fn [v] (take 2000 
-                      (conj v [(- x 15) (+ y 15) emoji]))))))))
-
 (e/defn DOM-canvas []
   (dom/div
    (e/for [emoji (e/server (reverse (e/watch canvas-state)))]
@@ -79,6 +66,8 @@
    (dom/text text)))
 
 (e/defn App []
+  
+  ;; Global styles
   (dom/style {:margin "0"
               :overflow "hidden"
               :user-select "none"
@@ -89,13 +78,30 @@
   (dom/element "style"
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
-                          .hover:hover { transform: scale(1.2); }"))
+                          .hover:hover { transform: scale(1.2); }")) 
+  
+  ;; Main div
   (dom/div
    (dom/style {:width "100vw"
                :height "100vh"})
+   
+   ;; Event listeners
    (dom/on "mousedown" (e/fn [e] (reset! mousedown true)))
    (dom/on "mouseup" (e/fn [e] (reset! mousedown false)))
-   (dom/on "mousemove" mousemove)
+   (dom/on "mousemove" 
+           (e/fn [e]
+             (let [x (.-clientX e)
+                   y (.-clientY e)
+                   m (e/watch mousedown)
+                   emoji (e/watch current-emoji)]
+               (e/server
+                (swap! users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
+                (when m
+                  (swap! canvas-state
+                         (fn [v] (take 2000
+                                       (conj v [(- x 15) (+ y 15) emoji])))))))))
+
+   ;; Emoji picker
    (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
@@ -110,10 +116,13 @@
                 :padding "10px"})
     (dom/div (e/for [emoji paint-emojis]
                (Button. emoji (e/fn [e] (reset! current-emoji emoji)))))
+    ;; Delete button
     (Button. "🗑️" (e/fn [e]
                      (e/server (reset! canvas-state []))
                      (when (= "canvas" @render-method)
                        (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
+   
+   ;; Render method picker
    (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
@@ -128,7 +137,7 @@
                 :box-shadow "0 0 5px rgba(0, 0, 0, 0.14)"
                 :z-index "1"
                 :font-size "16px"
-                :gap "5px"})
+                :gap "5px"}) 
     (e/for [method ["canvas" "dom"]]
       (dom/div
        (let [active (= (e/watch render-method) method)]
@@ -140,9 +149,13 @@
                      :background (if (true? active) "green" "none")}))
        (dom/on "click" (e/fn [e] (reset! render-method method)))
        (dom/text method))))
+
+   ;; Render canvas
    (case (e/watch render-method)
      "dom" (DOM-canvas.)
      "canvas" (Canvas-canvas.)))
+  
+  ;; User cursors
   (e/for [[session-id position] (e/server (e/watch users))]
     (dom/div
      (dom/style {:position "absolute"
@@ -153,8 +166,9 @@
                  :height "10px"
                  :padding-bottom "10px"
                  :pointer-events "none"})
-     (dom/text "👁️")))
+     (dom/text "👁️"))) 
   
+  ;; Detect when user joins/leaves
   (e/server
             ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle
    (let [session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"]))
