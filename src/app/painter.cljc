@@ -18,10 +18,27 @@
 
 #?(:cljs (defonce render-method (atom "canvas")))
 
+#?(:cljs (def scaling-factor (.-devicePixelRatio js/window)))
+
+(def canvas-size 5000)
+
+(e/defn mousemove [e]
+  (let [x (.-clientX e)
+        y (.-clientY e)
+        m (e/watch mousedown)
+        e (e/watch current-emoji)]
+    (e/server
+     (when m
+       (swap!
+        painted-emojis
+        (fn [v]
+          (take 10000
+                (conj v [x y e]))))))))
+
 
 (def available-emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
 
-(e/defn Dom-canvas []
+(e/defn DOM-canvas []
   (dom/div
    (e/for [vertex (e/server (reverse (e/watch painted-emojis)))]
      (dom/div
@@ -37,16 +54,19 @@
 
 (e/defn Canvas-canvas []
   (dom/canvas
-   (dom/props {:width  "4000"
-               :height "2000"
-               :id "canvas"})
+   (dom/props {:width  (* canvas-size scaling-factor)
+               :height (* canvas-size scaling-factor)
+               :id "canvas"
+               :style {:width (str canvas-size "px")
+                       :height (str canvas-size "px")}})
    (let [ctx (.getContext dom/node "2d")]
      (e/for [vertex (e/server (e/watch painted-emojis))]
-       (let [x (first vertex)
-             y (second vertex)
-             e (last vertex)]
-         (set! (.-font ctx) "30px sans-serif")
-         (.fillText ctx e x y))))))
+       (let [x (* (first vertex) scaling-factor)
+             y (* (second vertex) scaling-factor)
+             emoji (last vertex)
+             font-size (str (int (* 30 scaling-factor)) "px")]
+         (set! (.-font ctx) (str font-size " sans-serif"))
+         (.fillText ctx emoji x y))))))
 
 (e/defn App []
   (dom/style {:margin "0"
@@ -61,15 +81,7 @@
                :height "100vh"})
    (dom/on "mousedown" (e/fn [e] (reset! mousedown true)))
    (dom/on "mouseup" (e/fn [e] (reset! mousedown false)))
-   (dom/on "mousemove" (e/fn [e] (let [x (.-clientX e)
-                                       y (.-clientY e)
-                                       m (e/watch mousedown)
-                                       e (e/watch current-emoji)]
-                                   (e/server
-                                    (when m
-                                      (swap! painted-emojis (fn [v]
-                                                              (take 10000
-                                                                    (conj v [x y e])))))))))
+   (dom/on "mousemove" mousemove)
    (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
@@ -119,5 +131,5 @@
        (dom/on "click" (e/fn [e] (reset! render-method method)))
        (dom/text method))))
    (case (e/watch render-method)
-     "dom" (Dom-canvas.)
+     "dom" (DOM-canvas.)
      "canvas" (Canvas-canvas.)))) 

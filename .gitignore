@@ -13,3 +13,4 @@ report.html
 .clj-kondo
 target/*
 .DS_Store
+.calva/*
