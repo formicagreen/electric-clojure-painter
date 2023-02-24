@@ -18,12 +18,17 @@
 
 #?(:cljs (defonce !render-method (atom "canvas")))
 
+(e/def render-method (e/client (e/watch !render-method)))
+
+#?(:clj (defonce !canvas-cleared-times (atom [])))
+
+(e/def canvas-cleared-times (e/server (e/watch !canvas-cleared-times)))
+
 #?(:clj (def !users (atom {})))
 
 #?(:cljs (def !mousedown (atom false)))
 
 #?(:cljs (defonce !current-emoji (atom "🐱")))
-
 
 #?(:cljs (def scaling-factor (.-devicePixelRatio js/window)))
 
@@ -60,10 +65,7 @@
              emoji (last emoji)
              font-size (str (int (* 30 scaling-factor)) "px")]
          (set! (.-font ctx) (str font-size " sans-serif"))
-         (.fillText ctx emoji x y)))
-     (when (and (= "canvas" @!render-method)
-             (= 0 (count canvas-state)))
-       (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
+         (.fillText ctx emoji x y))))))
 
 (e/defn Button [text fn]
   (dom/div
@@ -124,8 +126,15 @@
                (Button. emoji (e/fn [e] (reset! !current-emoji emoji)))))
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
-                     (e/server (reset! !canvas-state [])))))
+                     (e/server (reset! !canvas-state [])
+                               (swap! !canvas-cleared-times conj 1)))))
    
+   (e/for [_ canvas-cleared-times]
+     (.. js/document
+         (getElementById "canvas")
+         (getContext "2d")
+         (clearRect 0 0 canvas-size canvas-size)))
+  
    ;; Render method picker
    (dom/div
     (dom/style {:background "#fff5"
@@ -144,7 +153,7 @@
                 :gap "5px"}) 
     (e/for [method ["canvas" "dom"]]
       (dom/div
-       (let [active (=  @!render-method method)]
+       (let [active (=  render-method method)]
          (dom/style {:border-radius "5px"
                      :text-transform "uppercase"
                      :letter-spacing "2px"
@@ -153,9 +162,10 @@
                      :background (if (true? active) "green" "none")}))
        (dom/on "click" (e/fn [e] (reset! !render-method method)))
        (dom/text method))))
+  
 
    ;; Render canvas
-   (case @!render-method
+   (case render-method
      "dom" (DOM-canvas.)
      "canvas" (Canvas-canvas.)))
   
