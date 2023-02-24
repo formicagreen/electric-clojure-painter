@@ -13,15 +13,17 @@
             [missionary.core :as m]))
 
 #?(:clj (defonce !canvas-state (atom [])))
+
 (e/def canvas-state (e/server (e/watch !canvas-state)))
 
-#?(:clj (def users (atom {})))
+#?(:cljs (defonce !render-method (atom "canvas")))
 
-#?(:cljs (def mousedown (atom false)))
+#?(:clj (def !users (atom {})))
 
-#?(:cljs (defonce current-emoji (atom "🐱")))
+#?(:cljs (def !mousedown (atom false)))
 
-#?(:cljs (defonce render-method (atom "canvas")))
+#?(:cljs (defonce !current-emoji (atom "🐱")))
+
 
 #?(:cljs (def scaling-factor (.-devicePixelRatio js/window)))
 
@@ -59,7 +61,7 @@
              font-size (str (int (* 30 scaling-factor)) "px")]
          (set! (.-font ctx) (str font-size " sans-serif"))
          (.fillText ctx emoji x y)))
-     (when (and (= "canvas" @render-method)
+     (when (and (= "canvas" @!render-method)
              (= 0 (count canvas-state)))
        (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
 
@@ -90,16 +92,16 @@
                :height "100vh"})
    
    ;; Event listeners
-   (dom/on "mousedown" (e/fn [e] (reset! mousedown true)))
-   (dom/on "mouseup" (e/fn [e] (reset! mousedown false)))
+   (dom/on "mousedown" (e/fn [e] (reset! !mousedown true)))
+   (dom/on "mouseup" (e/fn [e] (reset! !mousedown false)))
    (dom/on "mousemove" 
            (e/fn [e]
              (let [x (.-clientX e)
                    y (.-clientY e)
-                   m (e/watch mousedown)
-                   emoji (e/watch current-emoji)]
+                   m (e/watch !mousedown)
+                   emoji (e/watch !current-emoji)]
                (e/server
-                (swap! users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
+                (swap! !users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
                 (when m
                   (swap! !canvas-state
                          (fn [v] (take 2000
@@ -119,7 +121,7 @@
                 :justify-content "space-between"
                 :padding "10px"})
     (dom/div (e/for [emoji paint-emojis]
-               (Button. emoji (e/fn [e] (reset! current-emoji emoji)))))
+               (Button. emoji (e/fn [e] (reset! !current-emoji emoji)))))
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
                      (e/server (reset! !canvas-state [])))))
@@ -142,23 +144,23 @@
                 :gap "5px"}) 
     (e/for [method ["canvas" "dom"]]
       (dom/div
-       (let [active (= (e/watch render-method) method)]
+       (let [active (=  @!render-method method)]
          (dom/style {:border-radius "5px"
                      :text-transform "uppercase"
                      :letter-spacing "2px"
                      :padding "5px 10px"
                      :color (if (true? active) "white" "#666")
                      :background (if (true? active) "green" "none")}))
-       (dom/on "click" (e/fn [e] (reset! render-method method)))
+       (dom/on "click" (e/fn [e] (reset! !render-method method)))
        (dom/text method))))
 
    ;; Render canvas
-   (case (e/watch render-method)
+   (case @!render-method
      "dom" (DOM-canvas.)
      "canvas" (Canvas-canvas.)))
   
   ;; User cursors
-  (e/for [[session-id position] (e/server (e/watch users))]
+  (e/for [[session-id position] (e/server (e/watch !users))]
     (dom/div
      (dom/style {:position "absolute"
                  :left (str (- (first position) 15) "px")
@@ -175,11 +177,11 @@
             ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle
    (let [session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"]))
          >x (->> (m/observe (fn mount [!]
-                              (swap! users assoc session-id [nil nil])
-                              (println `mount session-id @users)
+                              (swap! !users assoc session-id [nil nil])
+                              (println `mount session-id @!users)
                               (fn unmount []
-                                (swap! users dissoc session-id)
-                                (println `unmount session-id @users))))
+                                (swap! !users dissoc session-id)
+                                (println `unmount session-id @!users))))
                  (m/reductions {} nil))]
               ; Missionary flows are booted with `new` (monadic join)
               ; This works because Electric is essentially a Clojure-to-Missionary compiler,
@@ -187,5 +189,5 @@
      (new >x))))
 
 (comment
-  @users
+  @!users
   )
