@@ -1,0 +1,9 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    user-select: none;
+    background: lightblue;
+    cursor: none;
+    font-family: sans-serif;
+    font-size: 30px;
+}

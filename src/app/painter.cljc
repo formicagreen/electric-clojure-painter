@@ -20,7 +20,7 @@
 
 (e/def render-method (e/client (e/watch !render-method)))
 
-#?(:clj (defonce !canvas-cleared-times (atom [])))
+#?(:clj (defonce !canvas-cleared-times (atom 0))) ; a "clock" - ticks for each clear "event"
 
 (e/def canvas-cleared-times (e/server (e/watch !canvas-cleared-times)))
 
@@ -73,16 +73,18 @@
    (dom/on "click" fn)
    (dom/text text)))
 
+#?(:cljs
+   (defn clear-canvas! [_t] ; ignored
+     ; perform this side effect each time the "clock" changes
+     (.. js/document ; js global is only allowed in :cljs
+       (getElementById "canvas")
+       (getContext "2d")
+       (clearRect 0 0 canvas-size canvas-size))))
+
 (e/defn App []
+  (dom/link (dom/props {:rel :stylesheet, :href "/index.css"}))
   
   ;; Global styles
-  (dom/style {:margin "0"
-              :overflow "hidden"
-              :user-select "none"
-              :background "lightblue"
-              :cursor "none"
-              :font-family "sans-serif"
-              :font-size "30px"})
   (dom/element "style"
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
@@ -127,13 +129,9 @@
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
                      (e/server (reset! !canvas-state [])
-                               (swap! !canvas-cleared-times conj 1)))))
-   
-   (e/for [_ canvas-cleared-times]
-     (.. js/document
-         (getElementById "canvas")
-         (getContext "2d")
-         (clearRect 0 0 canvas-size canvas-size)))
+                               (swap! !canvas-cleared-times inc)))))
+
+    (clear-canvas! canvas-cleared-times) ; run when parameter changes
   
    ;; Render method picker
    (dom/div
