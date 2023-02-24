@@ -12,7 +12,8 @@
             [clojure.string :as str]
             [missionary.core :as m]))
 
-#?(:clj (defonce canvas-state (atom [])))
+#?(:clj (defonce !canvas-state (atom [])))
+(e/def canvas-state (e/server (e/watch !canvas-state)))
 
 #?(:clj (def users (atom {})))
 
@@ -30,7 +31,7 @@
 
 (e/defn DOM-canvas []
   (dom/div
-   (e/for [emoji (e/server (reverse (e/watch canvas-state)))]
+   (e/for [emoji (e/server (reverse canvas-state))]
      (dom/div
       (dom/text (last emoji))
       (dom/style {:position "absolute"
@@ -51,13 +52,16 @@
                :style {:width (str canvas-size "px")
                        :height (str canvas-size "px")}})
    (let [ctx (.getContext dom/node "2d")]
-     (e/for [emoji (e/server (e/watch canvas-state))]
+     (e/for [emoji canvas-state]
        (let [x (* (first emoji) scaling-factor)
              y (* (second emoji) scaling-factor)
              emoji (last emoji)
              font-size (str (int (* 30 scaling-factor)) "px")]
          (set! (.-font ctx) (str font-size " sans-serif"))
-         (.fillText ctx emoji x y))))))
+         (.fillText ctx emoji x y)))
+     (when (and (= "canvas" @render-method)
+             (= 0 (count canvas-state)))
+       (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
 
 (e/defn Button [text fn]
   (dom/div
@@ -97,7 +101,7 @@
                (e/server
                 (swap! users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
                 (when m
-                  (swap! canvas-state
+                  (swap! !canvas-state
                          (fn [v] (take 2000
                                        (conj v [(- x 15) (+ y 15) emoji])))))))))
 
@@ -118,9 +122,7 @@
                (Button. emoji (e/fn [e] (reset! current-emoji emoji)))))
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
-                     (e/server (reset! canvas-state []))
-                     (when (= "canvas" @render-method)
-                       (.. js/document (getElementById "canvas") (getContext "2d") (clearRect 0 0 4000 2000))))))
+                     (e/server (reset! !canvas-state [])))))
    
    ;; Render method picker
    (dom/div
