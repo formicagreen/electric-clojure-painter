@@ -82,15 +82,9 @@
        (clearRect 0 0 canvas-size canvas-size))))
 
 (e/defn App []
+  (dom/link (dom/props {:rel :stylesheet, :href "/index.css"}))
   
   ;; Global styles
-  (dom/style {:margin "0"
-              :overflow "hidden"
-              :user-select "none"
-              :background "lightblue"
-              :cursor "none"
-              :font-family "sans-serif"
-              :font-size "30px"})
   (dom/element "style"
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
