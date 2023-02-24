@@ -12,11 +12,16 @@
             [clojure.string :as str]
             [missionary.core :as m]))
 
-#?(:clj (defonce !canvas-state (atom [])))
 
-(e/def canvas-state (e/server (e/watch !canvas-state)))
+#?(:clj (defonce !background (atom "lightblue")))
 
-#?(:cljs (defonce !render-method (atom "canvas")))
+#?(:clj (e/def background (e/server (e/watch !background))))
+
+#?(:clj (defonce !canvas-emojis (atom [])))
+
+(e/def canvas-emojis (e/server (e/watch !canvas-emojis)))
+
+#?(:cljs (defonce !render-method (atom "dom")))
 
 (e/def render-method (e/client (e/watch !render-method)))
 
@@ -32,13 +37,27 @@
 
 #?(:cljs (def scaling-factor (.-devicePixelRatio js/window)))
 
-(def paint-emojis ["🕉" "🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🫥" "🌰" "🐞" "🐹" "🪙" "🕸" "📞"])
+(e/defn paint-emoji! [e]
+  (let [x (.-clientX e)
+        y (.-clientY e)
+        m (e/watch !mousedown)
+        emoji (e/watch !current-emoji)]
+    (e/server
+     (swap! !users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
+     (when m
+       (swap! !canvas-emojis
+              (fn [v] (take 2000
+                            (conj v [(- x 15) (+ y 15) emoji]))))))))
+
+(def paint-emojis ["🧬" "🧿" "🌀" "♻️" "🐍" "🐱" "🍊" "🌰" "🐞" "🐧" "🪙"])
+
+(def cursor-emojis ["👁️" "👽" "🌝" "🌚" "💀" "🐝" "🌸" "🌼"])
 
 (def canvas-size 5000)
 
 (e/defn DOM-canvas []
   (dom/div
-   (e/for [emoji (e/server (reverse canvas-state))]
+   (e/for [emoji (e/server (reverse canvas-emojis))]
      (dom/div
       (dom/text (last emoji))
       (dom/style {:position "absolute"
@@ -59,7 +78,7 @@
                :style {:width (str canvas-size "px")
                        :height (str canvas-size "px")}})
    (let [ctx (.getContext dom/node "2d")]
-     (e/for [emoji canvas-state]
+     (e/for [emoji canvas-emojis]
        (let [x (* (first emoji) scaling-factor)
              y (* (second emoji) scaling-factor)
              emoji (last emoji)
@@ -82,45 +101,38 @@
        (clearRect 0 0 canvas-size canvas-size))))
 
 (e/defn App []
+  (dom/style {:background (e/server (e/watch !background))})
   (dom/link (dom/props {:rel :stylesheet, :href "/index.css"}))
-  
+
   ;; Global styles
   (dom/element "style"
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
-                          .hover:hover { transform: scale(1.2); }")) 
-  
+                          .hover:hover { transform: scale(1.2); }"))
+
   ;; Main div
   (dom/div
    (dom/style {:width "100vw"
                :height "100vh"})
-   
+
    ;; Event listeners
    (dom/on "mousedown" (e/fn [e] (reset! !mousedown true)))
+   (dom/on "mousedown" paint-emoji!)
    (dom/on "mouseup" (e/fn [e] (reset! !mousedown false)))
-   (dom/on "mousemove" 
-           (e/fn [e]
-             (let [x (.-clientX e)
-                   y (.-clientY e)
-                   m (e/watch !mousedown)
-                   emoji (e/watch !current-emoji)]
-               (e/server
-                (swap! !users assoc (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])) [x y])
-                (when m
-                  (swap! !canvas-state
-                         (fn [v] (take 2000
-                                       (conj v [(- x 15) (+ y 15) emoji])))))))))
+   (dom/on "mousemove" paint-emoji!)
 
    ;; Emoji picker
    (dom/div
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
                 :position "fixed"
-                :top "0"
-                :left "0"
-                :height "100vh"
                 :z-index "1"
                 :display "flex"
+                :top "10px"
+                :left "10px"
+                :border-radius "10px"
+                :box-shadow "0 0 5px rgba(0, 0, 0, 0.14)"
+                :height "calc(100vh - 20px)"
                 :flex-direction "column"
                 :justify-content "space-between"
                 :padding "10px"})
@@ -128,11 +140,11 @@
                (Button. emoji (e/fn [e] (reset! !current-emoji emoji)))))
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
-                     (e/server (reset! !canvas-state [])
+                     (e/server (reset! !canvas-emojis [])
                                (swap! !canvas-cleared-times inc)))))
 
-    (clear-canvas! canvas-cleared-times) ; run when parameter changes
-  
+   (when (= render-method "canvas") (clear-canvas! canvas-cleared-times)) ; run when parameter changes
+
    ;; Render method picker
    (dom/div
     (dom/style {:background "#fff5"
@@ -148,7 +160,7 @@
                 :box-shadow "0 0 5px rgba(0, 0, 0, 0.14)"
                 :z-index "1"
                 :font-size "16px"
-                :gap "5px"}) 
+                :gap "5px"})
     (e/for [method ["canvas" "dom"]]
       (dom/div
        (let [active (=  render-method method)]
@@ -160,13 +172,41 @@
                      :background (if (true? active) "green" "none")}))
        (dom/on "click" (e/fn [e] (reset! !render-method method)))
        (dom/text method))))
-  
+
+   ;; Background picker
+
+   (dom/div
+    (dom/style {:background "#fff5"
+                :backdrop-filter "blur(10px)"
+                :position "fixed"
+                :bottom "10px"
+                :right "10px"
+                :padding "10px"
+                :border-radius "10px"
+                :display "flex"
+                :flex-direction "column"
+                :text-align "center"
+                :box-shadow "0 0 5px rgba(0, 0, 0, 0.14)"
+                :z-index "1"
+                :font-size "16px"
+                :gap "5px"})
+    (e/for [color ["black" "lightblue" "lightgreen" "lightpink" "lightyellow"]]
+      (dom/div
+       (dom/style {:border-radius "100px"
+                   :border "1px solid #eeea"
+                   :width "30px"
+                   :height "30px"
+                   :padding "10px"
+                   :background color})
+       (dom/props {:class "hover"})
+       (dom/on "click" (e/fn [e] (e/server (reset! !background color))))
+       (dom/text background))))
 
    ;; Render canvas
    (case render-method
      "dom" (DOM-canvas.)
      "canvas" (Canvas-canvas.)))
-  
+
   ;; User cursors
   (e/for [[session-id position] (e/server (e/watch !users))]
     (dom/div
@@ -178,8 +218,8 @@
                  :height "10px"
                  :padding-bottom "10px"
                  :pointer-events "none"})
-     (dom/text "👁️"))) 
-  
+     (dom/text (cursor-emojis (mod (hash session-id) (count cursor-emojis))))))
+
   ;; Detect when user joins/leaves
   (e/server
             ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle
