@@ -14,3 +14,4 @@ report.html
 target/*
 .DS_Store
 .calva/*
+*.log
