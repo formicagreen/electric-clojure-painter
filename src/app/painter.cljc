@@ -171,7 +171,7 @@
    
 
   ;; Own cursor
-  (Cursor. [session-id mouse-position])
+  (Cursor. session-id mouse-position)
 
   ;; Other user's cursors
   (e/for [[id position] (e/server (e/watch !users))]
