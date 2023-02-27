@@ -35,17 +35,15 @@
 (e/defn mouse-touch-up [e] (reset! !current-path nil))
 
 (e/defn mouse-touch-move [e]
-  (let [x (or (.. e -clientX) (.. e -touches (item 0) -clientX))
+  (let [x (or (.. e -clientX) (.. e -touches (item 0) -clientX)) ; mouse or touch
         y (or (.. e -clientY) (.. e -touches (item 0) -clientY))]
     (reset! !mouse-position [x y])
     (e/server
-     (swap! !users assoc session-id [x y])
-     (when-not (nil? current-path)
-       (swap! !paths
-              (fn [!c] (update !c current-path ;; create or conj to path
-                               (fn [path] (assoc path
-                                                 :color current-color
-                                                 :points (conj (:points path) [x y]))))))))))
+     (swap! !users assoc session-id [x y]) ; update user position
+     (when-not (nil? current-path) ; if drawing
+       (swap! !paths #(-> %
+                          (update-in [current-path :points] conj [x y])
+                          (assoc-in [current-path :color] current-color)))))))
 (e/defn Cursor [id position]
   (when-not (nil? (first position))
     (dom/div
@@ -179,7 +177,7 @@
 
   ;; Detect when user joins/leaves
   (e/server
-            ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle
+            ; >x is a Missionary flow that attaches side effect to the mount/unmount lifecycle 
    (let [>x (->> (m/observe (fn mount [!]
                               (swap! !users assoc session-id [nil nil])
                               (println `mount session-id @!users)
