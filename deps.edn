@@ -14,7 +14,6 @@
                  {binaryage/devtools {:mvn/version "1.0.6"}}
                  :jvm-opts
                  ["-Xss2m" ; https://github.com/hyperfiddle/photon/issues/11
-                  "-Xmx500M"
                   "-Dclojure.tools.logging.factory=clojure.tools.logging.impl/slf4j-factory"
                   "-Dlogback.configurationFile=src/logback.xml"
                   "-XX:-OmitStackTraceInFastThrow" ;; RCF

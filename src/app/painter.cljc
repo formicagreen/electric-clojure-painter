@@ -10,28 +10,23 @@
             [clojure.string :as str]
             [missionary.core :as m]))
 
-
-(def cursor-emojis ["👁️" "👽" "🌝" "🌚" "💀" "🐝" "🌸" "🌼"])
-
-(def canvas-size 5000)
-
-#?(:clj (defonce !canvas-items (atom {})))
+#?(:clj (defonce !paths (atom {})))
 
 #?(:clj (def !users (atom {})))
 
 #?(:cljs (def !current-path (atom nil)))
 
-#?(:cljs (defonce !current-color (atom "lightblue")))
+#?(:cljs (defonce !current-color (atom "#0f172a")))
 
-#?(:cljs (def !mouse-coords (atom [0 0])))
+#?(:cljs (def !mouse-position (atom [nil nil])))
 
-(e/def canvas-items (e/server (e/watch !canvas-items)))
+(e/def paths (e/server (e/watch !paths)))
 
-(e/def current-color (e/server (e/watch !current-color)))
+(e/def current-color (e/client (e/watch !current-color)))
 
 (e/def current-path (e/client (e/watch !current-path)))
 
-(e/def mouse-coords (e/client (e/watch !mouse-coords)))
+(e/def mouse-position (e/client (e/watch !mouse-position)))
 
 (e/def session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])))
 
@@ -42,27 +37,29 @@
 (e/defn mouse-touch-move [e]
   (let [x (or (.. e -clientX) (.. e -touches (item 0) -clientX))
         y (or (.. e -clientY) (.. e -touches (item 0) -clientY))]
-    (reset! !mouse-coords [x y])
+    (reset! !mouse-position [x y])
     (e/server
      (swap! !users assoc session-id [x y])
      (when-not (nil? current-path)
-       (println "current-path" current-path)
-       (swap! !canvas-items
+       (swap! !paths
               (fn [!c] (update !c current-path ;; create or conj to path
                                (fn [path] (assoc path
                                                  :color current-color
                                                  :points (conj (:points path) [x y]))))))))))
-(e/defn Cursor [user]
-  (dom/div
-   (dom/style {:position "absolute"
-               :left (str (- (first (second user)) 15) "px")
-               :top (str (- (second (second user)) 15) "px")
-               :z-index "2"
-               :width "10px"
-               :height "10px"
-               :padding-bottom "10px"
-               :pointer-events "none"})
-   (dom/text (cursor-emojis (mod (hash (first user)) (count cursor-emojis))))))
+(e/defn Cursor [id position]
+  (when-not (nil? (first position))
+    (dom/div
+     (dom/style {:position "absolute"
+                 :left (str (- (first position) 15) "px")
+                 :top (str (- (second position) 15) "px")
+                 :z-index "2"
+                 :width "10px"
+                 :height "10px"
+                 :padding-bottom "10px"
+                 :pointer-events "none"})
+     (let [cursors ["👁️" "👽" "🌝" "🌚" "💀" "🐝" "🌸" "🌼"]
+           index (mod (hash id) (count cursors))]
+       (dom/text (nth cursors index))))))
 
 (e/defn Button [text fn]
   (dom/div
@@ -99,8 +96,8 @@
    (dom/on "touchend" mouse-touch-up)
    (dom/on "touchmove" mouse-touch-move)
 
+   ;; Toolbar
    (dom/div
-   ;; Color picker
     (dom/style {:background "#fff5"
                 :backdrop-filter "blur(10px)"
                 :position "fixed"
@@ -114,6 +111,7 @@
                 :flex-direction "column"
                 :justify-content "space-between"
                 :padding "10px"})
+   ;; Color picker
     (dom/div
      (e/for [color ["#0f172a" "#dc2626" "#ea580c"  "#fbbf24" "#a3e635" "#16a34a" "#0ea5e9" "#4f46e5" "#c026d3"]]
        (dom/div
@@ -125,19 +123,20 @@
                     :margin-bottom "10px"
                     :background color})
         (dom/props {:class "hover"})
-        (dom/on "click" (e/fn [e] (e/server (reset! !current-color color)))))))
+        (dom/on "click" (e/fn [e] (reset! !current-color color))))))
     ;; Delete button
     (Button. "🗑️" (e/fn [e]
                      (e/server
-                      (e/for [[k v] canvas-items]
-                        (swap! !canvas-items assoc k {}))))))
+                      (e/for [[k v] paths]
+                        (swap! !paths assoc k {}))))))
 
 
    ;; Render canvas
    ;; Remove old SVG if present (otherwise there will be duplicates when hot reloading)
    (when-let [old-svg (.getElementById js/document "svg")]
      (.remove old-svg))
-   (let [svg (.createElementNS js/document "http://www.w3.org/2000/svg" "svg")]
+   (let [svg (.createElementNS js/document "http://www.w3.org/2000/svg" "svg")
+         canvas-size 5000]
      (.setAttribute svg "viewBox" (str "0 0 " canvas-size " " canvas-size))
      (.setAttribute svg "width" (str canvas-size))
      (.setAttribute svg "height" (str canvas-size))
@@ -149,7 +148,7 @@
                           pointer-events: none; 
                           width: " canvas-size "px;"
                          "height: " canvas-size "px;"))
-     (e/for [[k v] canvas-items]
+     (e/for [[k v] paths]
        (let [old-path (.getElementById js/document k)
              d (->> (:points v)
                     (map (fn [[x y]] (str x "," y)))
@@ -172,12 +171,11 @@
    
 
   ;; Own cursor
-  (Cursor. [session-id mouse-coords])
+  (Cursor. [session-id mouse-position])
 
   ;; Other user's cursors
-  (e/for [user (e/server (e/watch !users))]
-    (let [cursor-is-me (= session-id (first user))]
-      (when-not cursor-is-me (Cursor. user))))
+  (e/for [[id position] (e/server (e/watch !users))]
+    (when-not (= session-id id) (Cursor. id position)))
 
   ;; Detect when user joins/leaves
   (e/server
