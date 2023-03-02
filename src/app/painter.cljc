@@ -45,6 +45,7 @@
        (swap! !paths #(-> %
                           (update-in [current-path :points] conj [x y])
                           (assoc-in [current-path :color] current-color)))))))
+
 (e/defn Cursor [id position]
   (when-not (nil? (first position))
     (dom/div
@@ -66,7 +67,6 @@
                         :overflow "hidden"
                         :user-select "none"
                         :cursor "none"
-                        :font-family "sans-serif"
                         :font-size "30px"})
 
   ;; Global styles
@@ -105,7 +105,7 @@
                      :padding "10px"})
    ;; Color picker
          (dom/div
-          (e/for [color ["#0f172a" "#dc2626" "#ea580c"  "#fbbf24" "#a3e635" "#16a34a" "#0ea5e9" "#4f46e5" "#c026d3"]]
+          (e/for [color ["#0f172a" "#dc2626" "#ea580c" "#fbbf24" "#a3e635" "#16a34a" "#0ea5e9" "#4f46e5" "#c026d3"]]
             (dom/div
              (dom/style {:border-radius "100px"
                          :border "1px solid #eeea"
@@ -115,42 +115,40 @@
                          :margin-bottom "10px"
                          :background color})
              (dom/props {:class "hover"})
-             (dom/on "click" (e/fn [e] (reset! !current-color color))))))
+             (dom/on "click"
+                     (e/fn [e] (reset! !current-color color))))))
     ;; Delete button
          (dom/div
           (dom/props {:class "hover"})
           (dom/on "click"
                   (e/fn [e]
                     (e/server
-                     (e/for [[k v] paths]
-                       (swap! !paths assoc k {})))))
+                     (reset! !paths {}))))
           (dom/text "🗑️")))
 
 
-   ;; Render canvas
-   ;; Remove old SVG if present (otherwise there will be duplicates when hot reloading)
+   ;; Paths
         (let [canvas-size 5000]
-          (svg/svg (dom/props {:viewBox (str "0 0 " canvas-size " " canvas-size)
-                               :width canvas-size
-                               :height canvas-size
-                               :style {:position "fixed"
-                                       :top "0"
-                                       :left "0"
-                                       :pointer-events "none"
-                                       :width (str canvas-size "px")
-                                       :height (str canvas-size "px")}})
-                   (e/server (e/for-by first [[k v] paths]
-                                       (let [d (->> (:points v)
-                                                    (map (fn [[x y]] (str x "," y)))
-                                                    (str/join " ")
-                                                    (str "M"))]
-                                         (e/client
-                                          (svg/path (dom/props {:fill "none"
-                                                                :stroke (:color v)
-                                                                :stroke-width "5"
-                                                                :stroke-opacity "0.7"
-                                                                :id k
-                                                                :d d}))))))))
+          (svg/svg
+           (dom/props {:viewBox (str "0 0 " canvas-size " " canvas-size)
+                       :style {:position "fixed"
+                               :top "0"
+                               :left "0"
+                               :pointer-events "none"
+                               :width (str canvas-size "px")
+                               :height (str canvas-size "px")}})
+           (e/server
+            (e/for-by first [[k v] paths]
+                      (let [draw (->> (:points v)
+                                      (map (fn [[x y]] (str x "," y)))
+                                      (str/join " ")
+                                      (str "M"))]
+                        (e/client
+                         (svg/path (dom/props {:d draw
+                                               :fill "none"
+                                               :stroke (:color v)
+                                               :stroke-width "5"
+                                               :stroke-opacity "0.7"}))))))))
 
 
 
