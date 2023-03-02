@@ -1,4 +1,4 @@
-(ns user ^:dev/always ; recompile (macroexpand) electricmain when any cljs src changes
+(ns user ^:dev/always ; recompile (macroexpand) electric-main when any cljs src changes
   (:require
     app.painter
     hyperfiddle.electric
