@@ -1,4 +1,4 @@
-(ns user ^:dev/always ; recompile (macroexpand) electric-main when any cljs src changes
+(ns ^:dev/always user ; Electric currently needs to rebuild everything when any file changes. Will fix
   (:require
     app.painter
     hyperfiddle.electric
@@ -6,8 +6,8 @@
 
 (def electric-main
   (hyperfiddle.electric/boot ; Electric macroexpansion - Clojure to signals compiler
-   (binding [hyperfiddle.electric-dom2/node js/document.body]
-     (app.painter/App.))))
+    (binding [hyperfiddle.electric-dom2/node js/document.body]
+      (app.painter/App.))))
 
 (defonce reactor nil)
 

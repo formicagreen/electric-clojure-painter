@@ -4,22 +4,19 @@
 (def start-electric-server! (delay @(requiring-resolve 'hyperfiddle.electric-jetty-server/start-server!)))
 (def shadow-start! (delay @(requiring-resolve 'shadow.cljs.devtools.server/start!)))
 (def shadow-watch (delay @(requiring-resolve 'shadow.cljs.devtools.api/watch)))
-(def shadow-release (delay @(requiring-resolve 'shadow.cljs.devtools.api/release)))
 
 (def electric-server-config
-  {:host "0.0.0.0", :port 8080, :resources-path "resources/public"})
+  {:host "0.0.0.0", :port 8080, :resources-path "public"})
 
 (defn main [& args]
   (println "Starting Electric compiler and server...")
-  (@shadow-start!) ; serves index.html as well 
-  (@shadow-watch :dev)
-  ; depends on shadow server
+  (@shadow-start!) ; serves index.html as well
+  (@shadow-watch :dev) ; depends on shadow server
+  ; Shadow loads app.todo-list here, such that it shares memory with server.
   (def server (@start-electric-server! electric-server-config))
-  (comment (.stop server))
-  )
+  (comment (.stop server)))
 
-; Userland Electric code is lazy loaded by the shadow build due to usage of
-; :require-macros in all Electric source files.
+; Server-side Electric userland code is lazy loaded by the shadow build.
 ; WARNING: make sure your REPL and shadow-cljs are sharing the same JVM!
 
 (comment
