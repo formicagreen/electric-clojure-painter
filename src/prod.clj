@@ -1,6 +1,6 @@
 (ns prod
   (:gen-class)
-  (:require app.todo-list ; in prod, load app into server so it can accept clients
+  (:require app.painter ; in prod, load app into server so it can accept clients
             hyperfiddle.electric-jetty-server))
 
 (def electric-server-config
