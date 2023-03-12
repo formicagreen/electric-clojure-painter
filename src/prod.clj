@@ -3,8 +3,10 @@
   (:require app.painter ; in prod, load app into server so it can accept clients
             hyperfiddle.electric-jetty-server))
 
+(def port (Integer/parseInt (or (System/getenv "PORT") "8080")))
+
 (def electric-server-config
-  {:host "0.0.0.0", :port 8080, :resources-path "public"})
+  {:host "0.0.0.0", :port port, :resources-path "public"})
 
 (defn -main [& args]
   (hyperfiddle.electric-jetty-server/start-server! electric-server-config))
