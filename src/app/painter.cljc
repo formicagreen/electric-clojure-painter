@@ -41,6 +41,14 @@
 
 (e/defn mouse-touch-up [e] (reset! !current-path nil))
 
+(e/defn Client-debugger [x]
+  (dom/div
+   (dom/style {:position "fixed"
+               :background "white"
+               :z-index "2"
+               :pointer-events "none"})
+   (dom/text (str x))))
+
 (e/defn mouse-touch-move [e]
   (let [x (or (.. e -clientX) (.. e -touches (item 0) -clientX)) ; mouse or touch
         y (or (.. e -clientY) (.. e -touches (item 0) -clientY))]
@@ -105,13 +113,6 @@
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
                           .hover:hover { transform: scale(1.2); }"))
-  
-  (dom/div
-   (dom/style {:position "fixed"
-               :background "white" 
-               :z-index "2"
-               :pointer-events "none"})
-   (dom/text (str current-path)))
 
   ;; Main div
   (dom/div
