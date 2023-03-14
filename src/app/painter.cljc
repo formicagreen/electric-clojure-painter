@@ -79,12 +79,13 @@
 
 (e/defn Path [{:keys [points color]}]
   (e/client 
-   (svg/polyline ; We use polyline element instead of path because it's easier to map over a vector of points
-    (dom/props {:points (str/join " " (map #(str (first %) "," (second %) " ") points))
+   (svg/polyline ; Use polyline element instead of path because it's easier to map over a vector of points
+    (dom/props {:points (str/join " " (map #(str (first %) "," (second %) " ") points)) ; Convert [[x1 y1] [x2 y2] ...] to "x1,y1 x2,y2 ..."
                 :stroke color
                 :fill "none"
                 :stroke-width "5"
                 :stroke-linecap "round"
+                :stroke-linejoin "round"
                 :opacity "0.9"}))))
 
 (e/defn Canvas []
