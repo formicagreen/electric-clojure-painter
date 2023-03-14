@@ -11,11 +11,11 @@
             [missionary.core :as m]
             [hyperfiddle.electric-svg :as svg]))
 
-#?(:clj (defonce !paths (atom {})))
+#?(:clj (defonce !paths (atom [])))
 
 #?(:clj (def !users (atom {})))
 
-#?(:cljs (def !current-path (atom nil)))
+#?(:cljs (def !current-path-id (atom nil)))
 
 #?(:cljs (defonce !current-color (atom "#0f172a")))
 
@@ -25,15 +25,21 @@
 
 (e/def current-color (e/client (e/watch !current-color)))
 
-(e/def current-path (e/client (e/watch !current-path)))
+(e/def current-path-id (e/client (e/watch !current-path-id)))
 
 (e/def mouse-position (e/client (e/watch !cursor-position)))
 
 (e/def session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])))
 
-(e/defn pointerdown [e] (reset! !current-path (rand-int 100000000)))
-
-(e/defn pointerup [e] (reset! !current-path nil))
+(e/defn pointerdown [e]
+  (let [x (.-clientX e)
+        y (.-clientY e)
+        id (rand-int 100000000)]
+    (reset! !current-path-id id)
+    (e/server
+     (swap! !paths conj {:id id
+                         :points [[x y]]
+                         :color current-color}))))
 
 (e/defn pointermove [e]
   (let [x (.-clientX e)
@@ -41,10 +47,16 @@
     (reset! !cursor-position [x y])
     (e/server
      (swap! !users assoc session-id [x y])
-     (when current-path
-       (swap! !paths #(-> %
-                          (update-in [current-path :points] conj [x y])
-                          (assoc-in [current-path :color] current-color)))))))
+     (when current-path-id
+       (swap!
+        !paths #(map (fn [path]
+                       (if (= (:id path) current-path-id)
+                         (update path :points conj [x y])
+                         path))
+                     %))))))
+
+(e/defn pointerup [e] (reset! !current-path-id nil))
+
 
 (e/defn Cursor [id position]
   (let [[x y] position
@@ -65,6 +77,16 @@
            index (mod (hash id) (count cursors))]
        (dom/text (cursors index)))))))
 
+(e/defn Path [{:keys [points color]}]
+  (e/client 
+   (svg/polyline ; We use polyline element instead of path because it's easier to map over a vector of points
+    (dom/props {:points (str/join " " (map #(str (first %) "," (second %) " ") points))
+                :stroke color
+                :fill "none"
+                :stroke-width "5"
+                :stroke-linecap "round"
+                :opacity "0.9"}))))
+
 (e/defn Canvas []
   (let [canvas-size 5000]
     (svg/svg
@@ -76,17 +98,8 @@
                          :width (str canvas-size "px")
                          :height (str canvas-size "px")}})
      (e/server
-      (e/for-by first [[k v] paths]
-                (let [draw (->> (:points v)
-                                (map (fn [[x y]] (str x "," y)))
-                                (str/join " ")
-                                (str "M"))]
-                  (e/client
-                   (svg/path (dom/props {:d draw
-                                         :fill "none"
-                                         :stroke (:color v)
-                                         :stroke-width "5"
-                                         :stroke-opacity "0.7"})))))))))
+      (e/for-by :id [path (reverse paths)] ; Reverse so that the newest paths are on top
+                (Path. path))))))
 
 (e/defn Toolbar []
   (dom/div
@@ -123,8 +136,16 @@
     (dom/on "click"
             (e/fn [e]
               (e/server
-               (reset! !paths {}))))
+               (reset! !paths []))))
     (dom/text "🗑️"))))
+
+(e/defn Debugger [x]
+  (dom/div 
+   (dom/style { :background "white"
+               :position "fixed"
+               :pointer-events "none"
+               :z-index "2"}))
+  (dom/text (str x)))
 
 (e/defn App []
   
@@ -147,7 +168,6 @@
                :height "100vh"})
 
    ; Event listeners 
-
    (dom/on "pointerdown" pointerdown)
    (dom/on "pointerup" pointerup)
    (dom/on "pointermove" pointermove)
@@ -167,3 +187,10 @@
   (e/server
    (swap! !users assoc session-id [nil nil])
    (e/on-unmount #(swap! !users dissoc session-id))))
+
+(comment
+  @!paths
+  (swap! !paths conj {:id 111111
+                      :points [[100 100] [(rand-int 1000) (rand-int 1000)]]
+                      :color (str "rgb(" (rand-int 255) "," (rand-int 255) "," (rand-int 255) ")")})
+  (reset! !paths []))
