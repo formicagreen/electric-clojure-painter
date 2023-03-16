@@ -1,14 +1,9 @@
 (ns app.painter
 
-  ; trick shadow into ensuring that client/server always have the same version
-  ; all .cljc files containing Electric code must have this line!
-  #?(:cljs (:require-macros app.painter)) ; <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
   (:require [hyperfiddle.electric :as e]
             [hyperfiddle.electric-dom2 :as dom]
             [hyperfiddle.api :as hf]
             [clojure.string :as str]
-            [missionary.core :as m]
             [hyperfiddle.electric-svg :as svg]))
 
 #?(:clj (defonce !paths (atom [])))
@@ -41,6 +36,9 @@
                          :points [[x y]]
                          :color current-color}))))
 
+(defn update-where [pred f coll]
+  (map (fn [x] (if (pred x) (f x) x)) coll))
+
 (e/defn pointermove [e]
   (let [x (.-clientX e)
         y (.-clientY e)]
@@ -48,39 +46,39 @@
     (e/server
      (swap! !users assoc session-id [x y])
      (when current-path-id
-       (swap!
-        !paths #(map (fn [path]
-                       (if (= (:id path) current-path-id)
-                         (update path :points conj [x y])
-                         path))
-                     %))))))
+       (swap! !paths 
+              (fn [paths]
+                (map
+                 #(if (= (:id %) current-path-id)
+                    (update % :points conj [x y])
+                    %)
+                 paths)))))))
 
 (e/defn pointerup [e] (reset! !current-path-id nil))
 
-
-(e/defn Cursor [id position]
-  (let [[x y] position
-        offset 15]
-   (when-not (nil? (first position))
-    (dom/div
-     (dom/style {:position "absolute"
-                 :left (str (- x offset) "px")
-                 :top (str (- y offset) "px")
-                 :z-index "2"
-                 :width "10px"
-                 :height "10px"
-                 :padding-bottom "10px"
-                 :pointer-events "none"})
-     (let [cursors ["👁️" "👽" "🌝" "🌚"
-                    "🐝" "🌸" "🌼" "🌱"
-                    "🧿" "🪲" "🌍" "🐬"]
-           index (mod (hash id) (count cursors))]
-       (dom/text (cursors index)))))))
+(e/defn Cursor [id [x y]]
+  (when (and x y)
+    (let [offset 15
+          cursors ["👁️" "👽" "🌝" "🌚"
+                   "🐝" "🌸" "🌼" "🌱"
+                   "🧿" "🪲" "🌍" "🐬"]
+          index (mod (hash id) (count cursors))]
+      (dom/div
+       (dom/style {:position "absolute"
+                   :left (str (- x offset) "px")
+                   :top (str (- y offset) "px")
+                   :z-index "2"
+                   :width "10px"
+                   :height "10px"
+                   :padding-bottom "10px"
+                   :pointer-events "none"})
+       (dom/text (cursors index))))))
 
 (e/defn Path [{:keys [points color]}]
   (e/client 
-   (svg/polyline ; Use polyline element instead of path because it's easier to map over a vector of points
-    (dom/props {:points (str/join " " (map #(str (first %) "," (second %) " ") points)) ; Convert [[x1 y1] [x2 y2] ...] to "x1,y1 x2,y2 ..."
+   (svg/polyline
+    (dom/props {:points (str/join " " (map #(str (first %) "," (second %)) points))
+                ; Convert [[x1 y1] [x2 y2] ...] to "x1,y1 x2,y2 ..."
                 :stroke color
                 :fill "none"
                 :stroke-width "5"
@@ -99,7 +97,7 @@
                          :width (str canvas-size "px")
                          :height (str canvas-size "px")}})
      (e/server
-      (e/for-by :id [path (reverse paths)] ; Reverse so that the newest paths are on top
+      (e/for-by :id [path (reverse paths)] ; Reverse so that newest paths are on top
                 (Path. path))))))
 
 (e/defn Toolbar []
@@ -142,14 +140,14 @@
 
 (e/defn Debugger [x]
   (dom/div 
-   (dom/style { :background "white"
+   (dom/style {:background "white"
                :position "fixed"
                :pointer-events "none"
                :z-index "2"}))
   (dom/text (str x)))
 
 (e/defn App []
-  
+  ; Global styles
   (dom/style {:background "lightyellow"
               :margin "0"
               :overflow "hidden"
@@ -157,33 +155,26 @@
               :cursor "none"
               :touch-action "none" ; needed for pointer move on mobile
               :font-size "30px"})
-
   (dom/element "style"
                (dom/text "* { box-sizing: border-box; }
                           .hover { transition: all ease 0.1s; }
                           .hover:hover { transform: scale(1.2); }"))
-
   ; Main div
   (dom/div
    (dom/style {:width "100vw"
                :height "100vh"})
-
    ; Event listeners 
    (dom/on "pointerdown" pointerdown)
    (dom/on "pointerup" pointerup)
    (dom/on "pointermove" pointermove)
-
+   ; UI
    (Toolbar.)
-
    (Canvas.)
-
    ; Own cursor
    (Cursor. session-id mouse-position)
-
    ; Other user's cursors
    (e/for [[id position] (e/server (e/watch !users))]
      (when-not (= session-id id) (Cursor. id position))))
-
   ; Detect when user joins/leaves
   (e/server
    (swap! !users assoc session-id [nil nil])
