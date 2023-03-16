@@ -36,9 +36,6 @@
                          :points [[x y]]
                          :color current-color}))))
 
-(defn update-where [pred f coll]
-  (map (fn [x] (if (pred x) (f x) x)) coll))
-
 (e/defn pointermove [e]
   (let [x (.-clientX e)
         y (.-clientY e)]
