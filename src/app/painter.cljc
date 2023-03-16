@@ -22,7 +22,7 @@
 
 (e/def current-path-id (e/client (e/watch !current-path-id)))
 
-(e/def mouse-position (e/client (e/watch !cursor-position)))
+(e/def cursor-position (e/client (e/watch !cursor-position)))
 
 (e/def session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])))
 
@@ -67,7 +67,6 @@
                    :z-index "2"
                    :width "10px"
                    :height "10px"
-                   :padding-bottom "10px"
                    :pointer-events "none"})
        (dom/text (cursors index))))))
 
@@ -114,7 +113,9 @@
                :padding "10px"})
    ; Color picker
    (dom/div
-    (e/for [color ["#0f172a" "#dc2626" "#ea580c" "#fbbf24" "#a3e635" "#16a34a" "#0ea5e9" "#4f46e5" "#c026d3"]]
+    (e/for [color ["#0f172a" "#dc2626" "#ea580c" 
+                   "#fbbf24" "#a3e635" "#16a34a" 
+                   "#0ea5e9" "#4f46e5" "#c026d3"]]
       (dom/div
        (dom/style {:border-radius "100px"
                    :border "1px solid #eeea"
@@ -168,7 +169,7 @@
    (Toolbar.)
    (Canvas.)
    ; Own cursor
-   (Cursor. session-id mouse-position)
+   (Cursor. session-id cursor-position)
    ; Other user's cursors
    (e/for [[id position] (e/server (e/watch !users))]
      (when-not (= session-id id) (Cursor. id position))))
