@@ -28,6 +28,15 @@
 
 (e/def session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])))
 
+(defn gen-paths [n]
+  (let [colors ["#0f172a" "#dc2626" "#ea580c"
+                "#fbbf24" "#a3e635" "#16a34a"
+                "#0ea5e9" "#4f46e5" "#c026d3"]]
+    (into {} (for [i (range n)]
+               [i {:points (for [j (range 100)]
+                             [(rand-int 1500) (rand-int 1500)])
+                   :color (rand-nth colors)}]))))
+
 (e/defn pointerdown [e]
   (let [x (.-clientX e)
         y (.-clientY e)
@@ -122,6 +131,14 @@
        (dom/props {:class "hover"})
        (dom/on "click"
                (e/fn [e] (reset! !current-color color))))))
+   ; Path add button
+    (dom/div
+      (dom/props {:class "hover"})
+      (dom/on "click"
+              (e/fn [e]
+                (e/server
+                  (swap! !paths #(into % (gen-paths 100))))))
+      (dom/text "➕"))
     ; Delete button
    (dom/div
     (dom/props {:class "hover"})
@@ -180,5 +197,5 @@
 
 (comment
   @!paths
-  (reset! !paths (sorted-map))
+  (reset! !paths (gen-paths 100))
   )
