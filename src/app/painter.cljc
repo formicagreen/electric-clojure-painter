@@ -6,7 +6,7 @@
             [clojure.string :as str]
             [hyperfiddle.electric-svg :as svg]))
 
-#?(:clj (defonce !paths (atom [])))
+#?(:clj (defonce !paths (atom (sorted-map))))
 
 #?(:clj (def !users (atom {})))
 
@@ -17,6 +17,8 @@
 #?(:cljs (def !cursor-position (atom [nil nil])))
 
 (e/def paths (e/server (e/watch !paths)))
+
+(e/def users (e/server (e/watch !users)))
 
 (e/def current-color (e/client (e/watch !current-color)))
 
@@ -29,12 +31,11 @@
 (e/defn pointerdown [e]
   (let [x (.-clientX e)
         y (.-clientY e)
-        id (rand-int 100000000)]
+        id (.now js/Date)]
     (reset! !current-path-id id)
     (e/server
-     (swap! !paths conj {:id id
-                         :points [[x y]]
-                         :color current-color}))))
+     (swap! !paths assoc id {:points [[x y]]
+                             :color current-color}))))
 
 (e/defn pointermove [e]
   (let [x (.-clientX e)
@@ -43,13 +44,7 @@
     (e/server
      (swap! !users assoc session-id [x y])
      (when current-path-id
-       (swap! !paths 
-              (fn [paths]
-                (map
-                 #(if (= (:id %) current-path-id)
-                    (update % :points conj [x y])
-                    %)
-                 paths)))))))
+       (swap! !paths update-in [current-path-id :points] conj [x y])))))
 
 (e/defn pointerup [e] (reset! !current-path-id nil))
 
@@ -93,8 +88,8 @@
                          :width (str canvas-size "px")
                          :height (str canvas-size "px")}})
      (e/server
-      (e/for-by :id [path (reverse paths)] ; Reverse so that newest paths are on top
-                (Path. path))))))
+      (e/for-by key [[k v] paths]
+                (Path. v))))))
 
 (e/defn Toolbar []
   (dom/div
@@ -133,7 +128,7 @@
     (dom/on "click"
             (e/fn [e]
               (e/server
-               (reset! !paths []))))
+               (reset! !paths (sorted-map)))))
     (dom/text "🗑️"))))
 
 (e/defn Debugger [x]
@@ -141,8 +136,11 @@
    (dom/style {:background "white"
                :position "fixed"
                :pointer-events "none"
-               :z-index "2"}))
-  (dom/text (str x)))
+               :top "0"
+               :left "0"
+               :opacity "0.8"
+               :z-index "2"})
+   (dom/text (str x))))
 
 (e/defn App []
   ; Global styles
@@ -171,8 +169,10 @@
    ; Own cursor
    (Cursor. session-id cursor-position)
    ; Other user's cursors
-   (e/for [[id position] (e/server (e/watch !users))]
+   (e/for [[id position] users]
      (when-not (= session-id id) (Cursor. id position))))
+  ; Debugging
+  #_(Debugger. paths)
   ; Detect when user joins/leaves
   (e/server
    (swap! !users assoc session-id [nil nil])
@@ -180,7 +180,5 @@
 
 (comment
   @!paths
-  (swap! !paths conj {:id 111111
-                      :points [[100 100] [(rand-int 1000) (rand-int 1000)]]
-                      :color (str "rgb(" (rand-int 255) "," (rand-int 255) "," (rand-int 255) ")")})
-  (reset! !paths []))
+  (reset! !paths (sorted-map))
+  )
