@@ -29,6 +29,7 @@
 (e/def session-id (e/server (get-in hf/*http-request* [:headers "sec-websocket-key"])))
 
 (defn gen-paths [n]
+  "Generate n random paths for testing"
   (let [colors ["#0f172a" "#dc2626" "#ea580c"
                 "#fbbf24" "#a3e635" "#16a34a"
                 "#0ea5e9" "#4f46e5" "#c026d3"]]
@@ -131,14 +132,6 @@
        (dom/props {:class "hover"})
        (dom/on "click"
                (e/fn [e] (reset! !current-color color))))))
-   ; Path add button
-    (dom/div
-      (dom/props {:class "hover"})
-      (dom/on "click"
-              (e/fn [e]
-                (e/server
-                  (swap! !paths #(into % (gen-paths 100))))))
-      (dom/text "➕"))
     ; Delete button
    (dom/div
     (dom/props {:class "hover"})
@@ -188,8 +181,6 @@
    ; Other user's cursors
    (e/for [[id position] users]
      (when-not (= session-id id) (Cursor. id position))))
-  ; Debugging
-  #_(Debugger. paths)
   ; Detect when user joins/leaves
   (e/server
    (swap! !users assoc session-id [nil nil])
